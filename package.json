@@ -6,7 +6,7 @@
   "author": "massaaki <eu@massaaki.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "rimraf dist && tsc -p tsconfig-build.json",
     "test": "jest --passWithNoTests",
     "test:staged": "yarn test -- --findRelatedTests",
     "test:unit": "yarn test -c jest.unit-config.js -- --watch",
