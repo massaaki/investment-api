@@ -11,6 +11,7 @@
     "test:staged": "yarn test -- --findRelatedTests",
     "test:unit": "yarn test -c jest.unit-config.js -- --watch",
     "test:integration": "yarn test -c jest.unit-config.js -- --watch",
+    "test:cache": "jest --clearCache",
     "prepare": "husky install"
   },
   "devDependencies": {
