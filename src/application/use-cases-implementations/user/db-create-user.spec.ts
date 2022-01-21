@@ -125,7 +125,7 @@ describe("## DbCreateUser UseCase", () => {
   });
 
   describe("Throws", () => {
-    it("should throw id Encrypter.hash throws", async () => {
+    it("should throw if Encrypter.hash throws", async () => {
       const { sut, hasherStub } = makeSut();
 
       jest.spyOn(hasherStub, "hash").mockImplementation(() => {
@@ -143,6 +143,20 @@ describe("## DbCreateUser UseCase", () => {
       jest
         .spyOn(createUserRepositoryStub, "create")
         .mockImplementationOnce(() => {
+          throw new Error();
+        });
+
+      const promise = sut.create(makeFakeUserProps());
+
+      await expect(promise).rejects.toThrow();
+    });
+
+    it("should throw if LoadUserByEmailRepository.loadByEmail throws", async () => {
+      const { sut, loadByUserByEmailRepositoryStub } = makeSut();
+
+      jest
+        .spyOn(loadByUserByEmailRepositoryStub, "loadByEmail")
+        .mockImplementation(() => {
           throw new Error();
         });
 
