@@ -1,5 +1,5 @@
 import { IHasher } from "@/application/protocols/criptography/hasher";
-import { CreateUserProps } from "@/domain/use-cases/user/create-user";
+import { CreateUserProps } from "@/domain/use-cases-protocols/user/create-user";
 
 import { DbCreateAccount } from "./db-create-user";
 

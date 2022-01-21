@@ -3,7 +3,7 @@ import { IUser } from "@/domain/entities/user";
 import {
   CreateUserProps,
   ICreateUser,
-} from "@/domain/use-cases/user/create-user";
+} from "@/domain/use-cases-protocols/user/create-user";
 
 export class DbCreateAccount implements ICreateUser {
   constructor(private readonly encrypter: IHasher) {}
