@@ -45,4 +45,16 @@ describe("DbCreateUser UseCase", () => {
 
     expect(hasherSpy).toHaveBeenCalledWith(fakeUser.password);
   });
+
+  it("should throw id Encrypter.hash throws", async () => {
+    const { sut, hasherStub } = makeSut();
+
+    jest.spyOn(hasherStub, "hash").mockImplementation(() => {
+      throw new Error();
+    });
+
+    const promise = sut.create(makeFakeUser());
+
+    expect(promise).rejects.toThrow();
+  });
 });
