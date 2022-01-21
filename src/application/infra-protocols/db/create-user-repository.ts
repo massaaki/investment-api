@@ -1,6 +1,6 @@
 import { IUser } from "@/domain/entities/user";
 
-type CreateUserProps = {
+export type CreateUserProps = {
   name: string;
   email: string;
   password: string;

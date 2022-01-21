@@ -4,7 +4,7 @@
   "host": "localhost",
   "username": "root",
   "password": "secret",
-  "database": "auth",
+  "database": "bullbearinvest",
   "migrations": [
     "./src/infra/database-adapters/typeorm-adapters/typeorm-migrations/*.ts"
   ],
@@ -12,6 +12,6 @@
     "./src/infra/database-adapters/typeorm-adapters/typeorm-entities/*.ts"
   ],
   "cli": {
-    "migrationsDir": "./src/infra/typeorm-adapters/type-orm-migrations"
+    "migrationsDir": "./src/infra/database-adapters/typeorm-adapters/typeorm-migrations"
   }
 }
