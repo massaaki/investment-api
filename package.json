@@ -1,0 +1,8 @@
+{
+  "name": "investment-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/massaaki/investment-api.git",
+  "author": "massaaki <eu@massaaki.com>",
+  "license": "MIT"
+}
