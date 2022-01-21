@@ -1,5 +1,6 @@
 import { IHasher } from "@/application/protocols/criptography/hasher";
 import { ICreateUserRepository } from "@/application/protocols/db/create-user-repository";
+import { ILoadUserByEmailRepository } from "@/application/protocols/db/load-user-by-email-repository";
 import { IUser } from "@/domain/entities/user";
 import { CreateUserProps } from "@/domain/use-cases-protocols/user/create-user";
 
@@ -38,72 +39,116 @@ const makeCreateUserRepository = () => {
   return new CreateUserRepositoryStub();
 };
 
+const makeLoadUserByEmailRepository = () => {
+  class LoadByUserByEmailRepositoryStub implements ILoadUserByEmailRepository {
+    async loadByEmail(): Promise<IUser> {
+      return new Promise((resolve) => resolve(null));
+    }
+  }
+
+  return new LoadByUserByEmailRepositoryStub();
+};
+
 type makeSutType = {
   sut: DbCreateUser;
   hasherStub: IHasher;
   createUserRepositoryStub: ICreateUserRepository;
+  loadByUserByEmailRepositoryStub: ILoadUserByEmailRepository;
 };
 
 const makeSut = (): makeSutType => {
   const hasherStub = makeHasher();
   const createUserRepositoryStub = makeCreateUserRepository();
-  const sut = new DbCreateUser(hasherStub, createUserRepositoryStub);
+  const loadByUserByEmailRepositoryStub = makeLoadUserByEmailRepository();
+  const sut = new DbCreateUser(
+    hasherStub,
+    createUserRepositoryStub,
+    loadByUserByEmailRepositoryStub
+  );
 
   return {
     sut,
     hasherStub,
     createUserRepositoryStub,
+    loadByUserByEmailRepositoryStub,
   };
 };
 
-describe("DbCreateUser UseCase", () => {
-  it("should calls Encrypter.hash with correct values", async () => {
-    const { sut, hasherStub } = makeSut();
-    const hasherSpy = jest.spyOn(hasherStub, "hash");
+describe("## DbCreateUser UseCase", () => {
+  describe("Verify", () => {
+    it("should return null if user already exists", async () => {
+      const { sut, loadByUserByEmailRepositoryStub } = makeSut();
 
-    const fakeUser = makeFakeUserProps();
+      jest
+        .spyOn(loadByUserByEmailRepositoryStub, "loadByEmail")
+        .mockReturnValueOnce(new Promise((resolve) => resolve(makeFakeUser())));
 
-    await sut.create(fakeUser);
-
-    expect(hasherSpy).toHaveBeenCalledWith(fakeUser.password);
+      const response = await sut.create(makeFakeUserProps());
+      expect(response).toBeNull();
+    });
   });
 
-  it("should throw id Encrypter.hash throws", async () => {
-    const { sut, hasherStub } = makeSut();
+  describe("Create user", () => {
+    it("should calls Encrypter.hash with correct values", async () => {
+      const { sut, hasherStub } = makeSut();
+      const hasherSpy = jest.spyOn(hasherStub, "hash");
 
-    jest.spyOn(hasherStub, "hash").mockImplementation(() => {
-      throw new Error();
+      const fakeUser = makeFakeUserProps();
+
+      await sut.create(fakeUser);
+
+      expect(hasherSpy).toHaveBeenCalledWith(fakeUser.password);
     });
 
-    const promise = sut.create(makeFakeUserProps());
+    it("should calls CreateUserRepository with correct values", async () => {
+      const { sut, createUserRepositoryStub } = makeSut();
 
-    await expect(promise).rejects.toThrow();
+      const createUserRepositorySpy = jest.spyOn(
+        createUserRepositoryStub,
+        "create"
+      );
+
+      const fakeUserProps = makeFakeUserProps();
+      await sut.create(fakeUserProps);
+
+      const createdUser = { ...fakeUserProps, password: "hashed_value" };
+
+      expect(createUserRepositorySpy).toHaveBeenCalledWith(createdUser);
+    });
+
+    it("should return an IUser on CreateUser succeeds", async () => {
+      const { sut } = makeSut();
+
+      const user = await sut.create(makeFakeUserProps());
+      expect(user).toEqual(makeFakeUser());
+    });
   });
 
-  it("should calls CreateUserRepository with correct values", async () => {
-    const { sut, createUserRepositoryStub } = makeSut();
+  describe("Throws", () => {
+    it("should throw id Encrypter.hash throws", async () => {
+      const { sut, hasherStub } = makeSut();
 
-    const createUserRepositorySpy = jest.spyOn(
-      createUserRepositoryStub,
-      "create"
-    );
-
-    await sut.create(makeFakeUserProps());
-
-    expect(createUserRepositorySpy).toHaveBeenCalledWith(makeFakeUserProps());
-  });
-
-  it("should throw if CreateUserRepository throws", async () => {
-    const { sut, createUserRepositoryStub } = makeSut();
-
-    jest
-      .spyOn(createUserRepositoryStub, "create")
-      .mockImplementationOnce(() => {
+      jest.spyOn(hasherStub, "hash").mockImplementation(() => {
         throw new Error();
       });
 
-    const promise = sut.create(makeFakeUserProps());
+      const promise = sut.create(makeFakeUserProps());
 
-    await expect(promise).rejects.toThrow();
+      await expect(promise).rejects.toThrow();
+    });
+
+    it("should throw if CreateUserRepository throws", async () => {
+      const { sut, createUserRepositoryStub } = makeSut();
+
+      jest
+        .spyOn(createUserRepositoryStub, "create")
+        .mockImplementationOnce(() => {
+          throw new Error();
+        });
+
+      const promise = sut.create(makeFakeUserProps());
+
+      await expect(promise).rejects.toThrow();
+    });
   });
 });
