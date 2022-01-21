@@ -30,6 +30,7 @@
     "prettier"
   ],
   "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
     "max-classes-per-file": "off",
     "prettier/prettier": "error",
     "no-promise-executor-return": "off",
