@@ -1,6 +1,6 @@
-import { IHasher } from "@/application/protocols/criptography/hasher";
-import { ICreateUserRepository } from "@/application/protocols/db/create-user-repository";
-import { ILoadUserByEmailRepository } from "@/application/protocols/db/load-user-by-email-repository";
+import { IHasher } from "@/application/infra-protocols/criptography/hasher";
+import { ICreateUserRepository } from "@/application/infra-protocols/db/create-user-repository";
+import { ILoadUserByEmailRepository } from "@/application/infra-protocols/db/load-user-by-email-repository";
 import { IUser } from "@/domain/entities/user";
 import { CreateUserProps } from "@/domain/use-cases-protocols/user/create-user";
 
