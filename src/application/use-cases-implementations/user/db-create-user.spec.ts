@@ -77,7 +77,7 @@ describe("DbCreateUser UseCase", () => {
 
     const promise = sut.create(makeFakeUserProps());
 
-    expect(promise).rejects.toThrow();
+    await expect(promise).rejects.toThrow();
   });
 
   it("should calls CreateUserRepository with correct values", async () => {
@@ -91,5 +91,19 @@ describe("DbCreateUser UseCase", () => {
     await sut.create(makeFakeUserProps());
 
     expect(createUserRepositorySpy).toHaveBeenCalledWith(makeFakeUserProps());
+  });
+
+  it("should throw if CreateUserRepository throws", async () => {
+    const { sut, createUserRepositoryStub } = makeSut();
+
+    jest
+      .spyOn(createUserRepositoryStub, "create")
+      .mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+    const promise = sut.create(makeFakeUserProps());
+
+    await expect(promise).rejects.toThrow();
   });
 });
