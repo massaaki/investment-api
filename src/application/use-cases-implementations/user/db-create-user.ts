@@ -1,5 +1,6 @@
 import { IHasher } from "@/application/protocols/criptography/hasher";
 import { ICreateUserRepository } from "@/application/protocols/db/create-user-repository";
+import { ILoadUserByEmailRepository } from "@/application/protocols/db/load-user-by-email-repository";
 import { IUser } from "@/domain/entities/user";
 import {
   CreateUserProps,
@@ -9,14 +10,23 @@ import {
 export class DbCreateUser implements ICreateUser {
   constructor(
     private readonly encrypter: IHasher,
-    private readonly createUserRepository: ICreateUserRepository
+    private readonly createUserRepository: ICreateUserRepository,
+    private readonly loadUserByEmailRepository: ILoadUserByEmailRepository
   ) {}
 
   async create(user: CreateUserProps): Promise<IUser> {
-    await this.encrypter.hash(user.password);
+    const userExists = await this.loadUserByEmailRepository.loadByEmail(
+      user.email
+    );
+    if (userExists) return null;
 
-    await this.createUserRepository.create(user);
+    const hashedPassword = await this.encrypter.hash(user.password);
 
-    return new Promise((resolve) => resolve(null));
+    const newUser = await this.createUserRepository.create({
+      ...user,
+      password: hashedPassword,
+    });
+
+    return newUser;
   }
 }
