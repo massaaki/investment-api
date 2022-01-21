@@ -1,9 +1,18 @@
 import { IHasher } from "@/application/protocols/criptography/hasher";
+import { ICreateUserRepository } from "@/application/protocols/db/create-user-repository";
+import { IUser } from "@/domain/entities/user";
 import { CreateUserProps } from "@/domain/use-cases-protocols/user/create-user";
 
-import { DbCreateAccount } from "./db-create-user";
+import { DbCreateUser } from "./db-create-user";
 
-const makeFakeUser = (): CreateUserProps => ({
+const makeFakeUser = (): IUser => ({
+  id: "any_id",
+  name: "any_name",
+  email: "any_email@email.com",
+  password: "hashed_value",
+});
+
+const makeFakeUserProps = (): CreateUserProps => ({
   name: "any_name",
   email: "any_email@email.com",
   password: "any_password",
@@ -19,18 +28,31 @@ const makeHasher = () => {
   return new HasherStub();
 };
 
+const makeCreateUserRepository = () => {
+  class CreateUserRepositoryStub implements ICreateUserRepository {
+    async create(): Promise<IUser> {
+      return new Promise((resolve) => resolve(makeFakeUser()));
+    }
+  }
+
+  return new CreateUserRepositoryStub();
+};
+
 type makeSutType = {
-  sut: DbCreateAccount;
+  sut: DbCreateUser;
   hasherStub: IHasher;
+  createUserRepositoryStub: ICreateUserRepository;
 };
 
 const makeSut = (): makeSutType => {
   const hasherStub = makeHasher();
-  const sut = new DbCreateAccount(hasherStub);
+  const createUserRepositoryStub = makeCreateUserRepository();
+  const sut = new DbCreateUser(hasherStub, createUserRepositoryStub);
 
   return {
     sut,
     hasherStub,
+    createUserRepositoryStub,
   };
 };
 
@@ -39,7 +61,7 @@ describe("DbCreateUser UseCase", () => {
     const { sut, hasherStub } = makeSut();
     const hasherSpy = jest.spyOn(hasherStub, "hash");
 
-    const fakeUser = makeFakeUser();
+    const fakeUser = makeFakeUserProps();
 
     await sut.create(fakeUser);
 
@@ -53,8 +75,21 @@ describe("DbCreateUser UseCase", () => {
       throw new Error();
     });
 
-    const promise = sut.create(makeFakeUser());
+    const promise = sut.create(makeFakeUserProps());
 
     expect(promise).rejects.toThrow();
+  });
+
+  it("should calls CreateUserRepository with correct values", async () => {
+    const { sut, createUserRepositoryStub } = makeSut();
+
+    const createUserRepositorySpy = jest.spyOn(
+      createUserRepositoryStub,
+      "create"
+    );
+
+    await sut.create(makeFakeUserProps());
+
+    expect(createUserRepositorySpy).toHaveBeenCalledWith(makeFakeUserProps());
   });
 });
