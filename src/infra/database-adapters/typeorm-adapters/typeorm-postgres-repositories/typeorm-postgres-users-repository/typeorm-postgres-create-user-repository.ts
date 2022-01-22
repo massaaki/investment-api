@@ -17,25 +17,22 @@ export class TypeormPostgresCreateUserRepository
 
 
   async create(userData: CreateUserProps): Promise<IUser> {
-    try {
-      this.repository = getRepository(User);
 
-      const user = this.repository.create({
-        name: userData.name,
-        email: userData.email,
-        hashed_password: userData.password,
-      })
+    this.repository = getRepository(User);
 
-      await this.repository.save(user);
-    } catch (err) {
-      console.log('Err..: ', err);
-    }
+    const user = this.repository.create({
+      name: userData.name,
+      email: userData.email,
+      hashed_password: userData.password,
+    })
+
+    await this.repository.save(user);
+
     return {
-      id: 'user.id',
-      name: 'user.name',
-      email: 'user.email',
-      password: 'user.hashed_password'
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: user.hashed_password
     }
-
   }
 }
