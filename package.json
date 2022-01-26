@@ -26,7 +26,6 @@
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "babel-eslint": "^10.1.0",
-    "better-sqlite3": "^7.5.0",
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.3.0",
@@ -49,5 +48,8 @@
     "pg": "^8.7.1",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
