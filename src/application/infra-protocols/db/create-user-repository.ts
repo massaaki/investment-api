@@ -1,11 +1,5 @@
-import { IUser } from "@/domain/entities/user";
-
-export type CreateUserProps = {
-  name: string;
-  email: string;
-  password: string;
-};
-
+import { CreateUserRequestDTO } from "@/application/infra-protocols/dtos/create-user-request-dto";
+import { CreateUserResponseDTO } from "@/application/infra-protocols/dtos/create-user-response-dto";
 export interface ICreateUserRepository {
-  create(userData: CreateUserProps): Promise<IUser>;
+  create(userData: CreateUserRequestDTO): Promise<CreateUserResponseDTO>;
 }

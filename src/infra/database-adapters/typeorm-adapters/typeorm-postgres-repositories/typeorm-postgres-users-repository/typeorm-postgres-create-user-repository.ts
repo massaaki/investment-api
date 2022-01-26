@@ -1,11 +1,10 @@
-import {
-  CreateUserProps,
-  ICreateUserRepository,
-} from "@/application/infra-protocols/db/create-user-repository";
-import { IUser } from "@/domain/entities/user";
 import { getRepository, Repository } from "typeorm";
-import { User } from "../../typeorm-entities/typeorm-user";
 
+import { CreateUserRequestDTO } from "@/application/dtos/create-user-request-dto";
+import { CreateUserResponseDTO } from "@/application/dtos/create-user-response-dto";
+import { ICreateUserRepository } from "@/application/infra-protocols/db/create-user-repository";
+
+import { User } from "../../typeorm-entities/typeorm-user";
 
 export class TypeormPostgresCreateUserRepository
   implements ICreateUserRepository {
@@ -15,8 +14,7 @@ export class TypeormPostgresCreateUserRepository
     // this.repository = getRepository(TypeormUser);
   }
 
-
-  async create(userData: CreateUserProps): Promise<IUser> {
+  async create(userData: CreateUserRequestDTO): Promise<CreateUserResponseDTO> {
 
     this.repository = getRepository(User);
 

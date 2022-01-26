@@ -16,10 +16,10 @@ export class DbCreateUser implements ICreateUser {
 
   async create(user: CreateUserProps): Promise<IUser> {
 
-    console.log('dbCreateuser');
     const userExists = await this.loadUserByEmailRepository.loadByEmail(
       user.email
     );
+
     if (userExists) return null;
 
     const hashedPassword = await this.encrypter.hash(user.password);
