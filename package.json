@@ -45,6 +45,7 @@
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.2",
+    "module-alias": "^2.2.2",
     "pg": "^8.7.1",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2"
