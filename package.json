@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig-build.json",
+    "start": "node dist/main/server.js",
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn  src/main/server.ts",
     "test": "jest --passWithNoTests",
     "test:staged": "yarn test -- --findRelatedTests",
@@ -49,6 +50,9 @@
     "pg": "^8.7.1",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2"
+  },
+  "engines": {
+    "node": "17.x"
   },
   "_moduleAliases": {
     "@": "dist"
