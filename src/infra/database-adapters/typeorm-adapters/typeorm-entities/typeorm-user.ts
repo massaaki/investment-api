@@ -3,16 +3,16 @@ import { v4 as uuidV4 } from "uuid";
 
 @Entity("users")
 export class User {
-  @PrimaryColumn()
+  @PrimaryColumn('text', { nullable: false })
   id?: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   name: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   email: string;
 
-  @Column()
+  @Column('text', { nullable: false })
   hashed_password: string;
 
   @CreateDateColumn()

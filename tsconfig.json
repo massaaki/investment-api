@@ -3,19 +3,23 @@
     "outDir": "dist",
     "target": "es2019",
     "module": "commonjs",
-    "rootDir": "src",
-    "baseUrl": "src",
+    "lib": [
+      "ES6"
+    ],
+    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "*"
+        "./src/*"
       ]
     },
+    "removeComments": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "strict": false
   },
   "include": [
     "src"
