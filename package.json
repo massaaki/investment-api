@@ -15,6 +15,7 @@
     "test:integration": "yarn test -c jest.unit-config.js -- --watch",
     "test:cache": "jest --clearCache",
     "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:studio": "prisma studio",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli",
     "prepare": "husky install"
   },
