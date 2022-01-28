@@ -14,6 +14,7 @@
     "test:unit": "yarn test -c jest.unit-config.js -- --watch",
     "test:integration": "yarn test -c jest.unit-config.js -- --watch",
     "test:cache": "jest --clearCache",
+    "prisma:migrate": "prisma migrate dev --name init",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli",
     "prepare": "husky install"
   },
@@ -49,11 +50,13 @@
     "jest": "^27.4.7",
     "lint-staged": "^12.2.2",
     "prettier": "^2.5.1",
+    "prisma": "^3.8.1",
     "ts-jest": "^27.1.3",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.5"
   },
   "dependencies": {
+    "@prisma/client": "^3.8.1",
     "apollo-server-express": "^3.6.2",
     "bcrypt": "^5.0.1",
     "express": "^4.17.2",

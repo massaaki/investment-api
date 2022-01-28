@@ -12,6 +12,7 @@
         "./src/*"
       ]
     },
+    "sourceMap": true,
     "removeComments": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
