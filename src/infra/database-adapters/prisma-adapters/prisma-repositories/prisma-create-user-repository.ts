@@ -14,7 +14,7 @@ export class PrismaCreateUserRepository
     const client = new PrismaClient();
     const { name, email, password } = userData;
 
-    const newUser = await client.users.create({
+    const newUser = await client.user.create({
       data: {
         name,
         email,

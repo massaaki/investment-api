@@ -38,10 +38,12 @@ export class DbAuthenticate implements IAuthenticate {
 
     const newToken = await this.token.generate(user.id, 15); // 15min
     const newRefreshToken = await this.token.generate(user.id, 60 * 24 * 7); // 7 days
+    let expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
 
     await this.createUsersTokensRepository.create({
       userId: user.id,
-      expires_at: new Date(),
+      expiresAt,
       refreshToken: newRefreshToken
     })
 

@@ -9,7 +9,7 @@ export class PrismaLoadUserByEmailRepository
   async loadByEmail(email: string): Promise<IUser> {
     const client = new PrismaClient();
 
-    const user = await client.users.findFirst({
+    const user = await client.user.findFirst({
       where: {
         email: email
       }
