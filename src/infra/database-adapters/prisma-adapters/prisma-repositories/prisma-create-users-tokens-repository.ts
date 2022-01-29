@@ -7,7 +7,7 @@ export class PrismaCreateUsersTokensRepository implements ICreateUsersTokensRepo
     const client = new PrismaClient();
     await client.usersTokens.create({
       data: {
-        id: userId,
+        userId,
         refreshToken,
         expiresAt
       }
