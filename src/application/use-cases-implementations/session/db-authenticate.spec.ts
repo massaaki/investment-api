@@ -1,7 +1,7 @@
 import { CreateUsersTokensRequestDto } from "@/application/dtos/create-users-tokens-dto/create-users-tokens-request-dto";
 import { CreateUsersTokensResponseDto } from "@/application/dtos/create-users-tokens-dto/create-users-tokens-response-dto";
 import { IHashComparer } from "@/application/infra-protocols/criptography/hash-comparer";
-import { IToken } from "@/application/infra-protocols/criptography/token";
+import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
 import { ICreateUsersTokensRepository } from "@/application/infra-protocols/db/create-users-tokens-repository";
 import { IUser } from "@/domain/entities/user";
 import { ILoadUserByEmail } from "@/domain/use-cases-protocols/user/load-user-by-email";

@@ -1,5 +1,5 @@
 import { IHashComparer } from "@/application/infra-protocols/criptography/hash-comparer";
-import { IToken } from "@/application/infra-protocols/criptography/token";
+import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
 import { ICreateUsersTokensRepository } from "@/application/infra-protocols/db/create-users-tokens-repository";
 import { ILoadUserByEmailRepository } from "@/application/infra-protocols/db/load-user-by-email-repository";
 import { ISession } from "@/domain/entities/session";

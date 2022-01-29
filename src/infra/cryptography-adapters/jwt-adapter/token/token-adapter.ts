@@ -1,6 +1,6 @@
 import { sign } from 'jsonwebtoken';
 
-import { IToken } from "@/application/infra-protocols/criptography/token";
+import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
 
 export class TokenAdapter implements IToken {
   constructor(private readonly secret: string) {}
