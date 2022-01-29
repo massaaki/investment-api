@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 
 import { HashComparer } from "./hash-comparer";
 
-
 const makeSut = () => {
   const sut = new HashComparer();
   return { sut };
