@@ -1,7 +1,7 @@
 import { getRepository, Repository } from "typeorm";
 
-import { CreateUserRequestDTO } from "@/application/dtos/create-user-request-dto";
-import { CreateUserResponseDTO } from "@/application/dtos/create-user-response-dto";
+import { CreateUserRequestDTO } from "@/application/dtos/create-user-dto/create-user-request-dto";
+import { CreateUserResponseDTO } from "@/application/dtos/create-user-dto/create-user-response-dto";
 import { ICreateUserRepository } from "@/application/infra-protocols/db/create-user-repository";
 
 import { User } from "../../typeorm-entities/typeorm-user";
