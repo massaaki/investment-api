@@ -1,4 +1,4 @@
-import { DbAuthenticate } from "@/application/use-cases-implementations/session/db-authenticate";
+import { DbAuthenticate } from "@/application/use-cases-implementations/session/db-autenticate/db-authenticate";
 import { HashComparer } from "@/infra/cryptography-adapters/bcrypt-adapter/hash-comparer/hash-comparer";
 import { TokenEncrypterAdapter } from "@/infra/cryptography-adapters/jwt-adapter/token-encrypter/token-encrypter-adapter";
 import { PrismaLoadUserByEmailRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/prisma-load-user-by-email-repository";
