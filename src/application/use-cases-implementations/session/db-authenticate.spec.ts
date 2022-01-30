@@ -1,10 +1,10 @@
 import { CreateUsersTokensRequestDto } from "@/application/dtos/create-users-tokens-dto/create-users-tokens-request-dto";
 import { CreateUsersTokensResponseDto } from "@/application/dtos/create-users-tokens-dto/create-users-tokens-response-dto";
 import { IHashComparer } from "@/application/infra-protocols/criptography/hash-comparer";
-import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
+import { ITokenEncrypter } from "@/application/infra-protocols/criptography/token-encrypter";
 import { ICreateUsersTokensRepository } from "@/application/infra-protocols/db/create-users-tokens-repository";
+import { ILoadUserByEmailRepository } from "@/application/infra-protocols/db/load-user-by-email-repository";
 import { IUser } from "@/domain/entities/user";
-import { ILoadUserByEmail } from "@/domain/use-cases-protocols/user/load-user-by-email";
 import { DbAuthenticate } from "./db-authenticate";
 
 
@@ -30,13 +30,13 @@ const makeCreateUsersTokensRepository = () => {
   return new CreateUsersTokensRepositoryStub();
 }
 
-const makeToken = () => {
-  class TokenStub implements IToken {
+const makeTokenEncrypter = () => {
+  class TokenEncrypterStub implements ITokenEncrypter {
     async generate(userId: string, expiresInMinutes: number): Promise<string> {
       return new Promise(resolve => resolve('any-token'));
     }
   }
-  return new TokenStub();
+  return new TokenEncrypterStub();
 }
 
 const makeHashComparer = () => {
@@ -50,7 +50,7 @@ const makeHashComparer = () => {
 
 
 const makeLoadUserByEmailRepositoryStub = () => {
-  class LoadUserByEmailRepositoryStub implements ILoadUserByEmail {
+  class LoadUserByEmailRepositoryStub implements ILoadUserByEmailRepository {
     async loadByEmail(email: string): Promise<IUser> {
       return new Promise(resolve => resolve(makeFakeUser()));
     }
@@ -60,22 +60,22 @@ const makeLoadUserByEmailRepositoryStub = () => {
 
 type makeSutType = {
   sut: DbAuthenticate;
-  loadUserByEmailRepositoryStub: ILoadUserByEmail;
+  loadUserByEmailRepositoryStub: ILoadUserByEmailRepository;
   hashComparerStub: IHashComparer;
-  tokenStub: IToken;
+  tokenEncrypterStub: ITokenEncrypter;
   createUsersTokensRepositoryStub: ICreateUsersTokensRepository;
 }
 
 const makeSut = (): makeSutType => {
   const loadUserByEmailRepositoryStub = makeLoadUserByEmailRepositoryStub();
   const hashComparerStub = makeHashComparer();
-  const tokenStub = makeToken();
+  const tokenEncrypterStub = makeTokenEncrypter();
   const createUsersTokensRepositoryStub = makeCreateUsersTokensRepository();
 
   const sut = new DbAuthenticate(
     loadUserByEmailRepositoryStub,
     hashComparerStub,
-    tokenStub,
+    tokenEncrypterStub,
     createUsersTokensRepositoryStub
   );
 
@@ -83,7 +83,7 @@ const makeSut = (): makeSutType => {
     sut,
     loadUserByEmailRepositoryStub,
     hashComparerStub,
-    tokenStub,
+    tokenEncrypterStub,
     createUsersTokensRepositoryStub
   };
 }
@@ -143,8 +143,8 @@ describe('## DbAuthenticate UseCase', () => {
     });
 
     it('should call Token.generate with 2 times(token and refreshToken)', async () => {
-      const { sut, tokenStub } = makeSut();
-      const generateSpy = jest.spyOn(tokenStub, 'generate');
+      const { sut, tokenEncrypterStub } = makeSut();
+      const generateSpy = jest.spyOn(tokenEncrypterStub, 'generate');
 
       await sut.auth(makeFakeRequest());
 
@@ -179,8 +179,8 @@ describe('## DbAuthenticate UseCase', () => {
     });
 
     it('should throw if Token.generate throws', async () => {
-      const { sut, tokenStub } = makeSut();
-      jest.spyOn(tokenStub, 'generate').mockImplementation(() => {
+      const { sut, tokenEncrypterStub } = makeSut();
+      jest.spyOn(tokenEncrypterStub, 'generate').mockImplementation(() => {
         throw new Error();
       });
 

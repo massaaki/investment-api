@@ -1,5 +1,5 @@
 import { IHashComparer } from "@/application/infra-protocols/criptography/hash-comparer";
-import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
+import { ITokenEncrypter } from "@/application/infra-protocols/criptography/token-encrypter";
 import { ICreateUsersTokensRepository } from "@/application/infra-protocols/db/create-users-tokens-repository";
 import { ILoadUserByEmailRepository } from "@/application/infra-protocols/db/load-user-by-email-repository";
 import { ISession } from "@/domain/entities/session";
@@ -10,7 +10,7 @@ export class DbAuthenticate implements IAuthenticate {
   constructor(
     private readonly loadUserByEmailRepository: ILoadUserByEmailRepository,
     private readonly hashComparer: IHashComparer,
-    private readonly token: IToken,
+    private readonly tokenEncrypter: ITokenEncrypter,
     private readonly createUsersTokensRepository: ICreateUsersTokensRepository
   ) {}
 
@@ -36,8 +36,8 @@ export class DbAuthenticate implements IAuthenticate {
       return null;
     }
 
-    const newToken = await this.token.generate(user.id, 15); // 15min
-    const newRefreshToken = await this.token.generate(user.id, 60 * 24 * 7); // 7 days
+    const newToken = await this.tokenEncrypter.generate(user.id, 15); // 15min
+    const newRefreshToken = await this.tokenEncrypter.generate(user.id, 60 * 24 * 7); // 7 days
     let expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
 

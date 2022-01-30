@@ -1,8 +1,8 @@
 import { sign } from 'jsonwebtoken';
 
-import { IToken } from "@/application/infra-protocols/criptography/token-encrypter";
+import { ITokenEncrypter } from "@/application/infra-protocols/criptography/token-encrypter";
 
-export class TokenAdapter implements IToken {
+export class TokenAdapter implements ITokenEncrypter {
   constructor(private readonly secret: string) {}
 
   async generate(userId: string, expiresInMinutes: number): Promise<string> {
