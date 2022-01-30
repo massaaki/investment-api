@@ -2,7 +2,7 @@ import { sign } from 'jsonwebtoken';
 
 import { ITokenEncrypter } from "@/application/infra-protocols/criptography/token-encrypter";
 
-export class TokenAdapter implements ITokenEncrypter {
+export class TokenEncrypterAdapter implements ITokenEncrypter {
   constructor(private readonly secret: string) {}
 
   async generate(userId: string, expiresInMinutes: number): Promise<string> {

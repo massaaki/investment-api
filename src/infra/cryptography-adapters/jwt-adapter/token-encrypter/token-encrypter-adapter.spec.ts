@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { TokenAdapter } from "./token-adapter";
+import { TokenEncrypterAdapter } from "./token-encrypter-adapter";
 
 
 jest.mock('jsonwebtoken', () => ({
@@ -10,7 +10,7 @@ jest.mock('jsonwebtoken', () => ({
 
 
 const makeSut = () => {
-  const sut = new TokenAdapter('any-secret');
+  const sut = new TokenEncrypterAdapter('any-secret');
   return { sut };
 };
 
