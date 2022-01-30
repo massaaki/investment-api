@@ -12,8 +12,6 @@ export default {
     renewRefreshToken: async (parent, args): Promise<RenewRefreshTokenResponse> => {
       const { refreshToken } = args
 
-      console.log(refreshToken);
-
       const controller = makeRenewRefreshTokenFactory();
       const httpRequest: HttpRequest = {
         body: {
