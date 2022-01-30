@@ -1,4 +1,4 @@
-import { makeLoginControllerFactory } from "@/main/factories/users/login-controller-factory";
+import { makeLoginControllerFactory } from "@/main/factories/sessions/login-controller-factory";
 import { HttpRequest } from "@/presentation/protocols/http";
 
 type LoginResponse = {
