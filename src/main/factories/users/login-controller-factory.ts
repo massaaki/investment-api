@@ -1,6 +1,6 @@
 import { DbAuthenticate } from "@/application/use-cases-implementations/session/db-authenticate";
 import { HashComparer } from "@/infra/cryptography-adapters/bcrypt-adapter/hash-comparer/hash-comparer";
-import { TokenAdapter } from "@/infra/cryptography-adapters/jwt-adapter/token/token-adapter";
+import { TokenEncrypterAdapter } from "@/infra/cryptography-adapters/jwt-adapter/token-encrypter/token-encrypter-adapter";
 import { PrismaLoadUserByEmailRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/prisma-load-user-by-email-repository";
 import { LoginController } from "@/presentation/controllers/users/login/login-controller";
 
@@ -12,7 +12,7 @@ import { PrismaCreateUsersTokensRepository } from "@/infra/database-adapters/pri
 export const makeLoginControllerFactory = (): IController => {
 
   const createUsersTokensRepository = new PrismaCreateUsersTokensRepository();
-  const token = new TokenAdapter(env.jwtSecret);
+  const token = new TokenEncrypterAdapter(env.jwtSecret);
   const hashComparer = new HashComparer();
   const loadUserByEmailRepository = new PrismaLoadUserByEmailRepository();
 
