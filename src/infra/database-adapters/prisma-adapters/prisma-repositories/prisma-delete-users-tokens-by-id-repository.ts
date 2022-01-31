@@ -1,9 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+// import { PrismaClient } from "@prisma/client";
+import { Client } from '../client'
 import { IDeleteUsersTokensByIdRepository } from "@/application/infra-protocols/db/delete-users-tokens-by-id-repository";
 
 export class PrismaDeleteUsersByIdRepository implements IDeleteUsersTokensByIdRepository {
   async deleteById(id: string): Promise<void> {
-    const client = new PrismaClient();
+    const client = Client.getInstance();
 
     await client.usersTokens.delete({
       where: {
@@ -11,7 +12,7 @@ export class PrismaDeleteUsersByIdRepository implements IDeleteUsersTokensByIdRe
       }
     });
 
-    await client.$disconnect();
+    // await client.$disconnect();
   }
 
 }

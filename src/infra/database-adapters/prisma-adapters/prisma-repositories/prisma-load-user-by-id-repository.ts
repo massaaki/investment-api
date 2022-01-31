@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+import { Client } from '../client'
 
 import { IUser } from "@/domain/entities/user";
 import { ILoadUserByIdRepository } from '@/application/infra-protocols/db/load-user-by-id-repository';
@@ -7,7 +8,7 @@ export class PrismaLoadUserByIdRepository
   implements ILoadUserByIdRepository {
 
   async loadById(id: string): Promise<IUser> {
-    const client = new PrismaClient();
+    const client = Client.getInstance();
 
     const user = await client.user.findFirst({
       where: {
@@ -15,7 +16,7 @@ export class PrismaLoadUserByIdRepository
       }
     });
 
-    await client.$disconnect();
+    // await client.$disconnect();
 
     if (!user)
       return null;

@@ -1,4 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
+import { Client } from '../client'
 
 import { CreateUserRequestDTO } from "@/application/dtos/create-user-dto/create-user-request-dto";
 import { CreateUserResponseDTO } from "@/application/dtos/create-user-dto/create-user-response-dto";
@@ -11,7 +12,7 @@ export class PrismaCreateUserRepository
   }
 
   async create(userData: CreateUserRequestDTO): Promise<CreateUserResponseDTO> {
-    const client = new PrismaClient();
+    const client = Client.getInstance();
     const { name, email, password } = userData;
 
     const newUser = await client.user.create({
@@ -22,7 +23,7 @@ export class PrismaCreateUserRepository
       }
     })
 
-    await client.$disconnect();
+    // await client.$disconnect();
 
     return {
       id: newUser.id,
