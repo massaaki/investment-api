@@ -46,8 +46,7 @@ export class DbRenewRefreshToken implements IRenewRefreshToken {
     await this.deleteUsersTokensByIdRepository.deleteById(usersTokens.id);
 
     // create a new token
-    const newToken = await this.tokenEncrypter.generate(user.id, 1);
-    // const newToken = await this.tokenEncrypter.generate(user.id, 15);
+    const newToken = await this.tokenEncrypter.generate(user.id, 15);
 
     // create a new refreshToken
     const newRefreshToken = await this.tokenEncrypter.generate(user.id, 60 * 24 * 7);

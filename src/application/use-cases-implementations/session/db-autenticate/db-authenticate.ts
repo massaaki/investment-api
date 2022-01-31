@@ -35,11 +35,8 @@ export class DbAuthenticate implements IAuthenticate {
     if (!isPasswordMatch) {
       return null;
     }
-    // const newToken = await this.tokenEncrypter.generate(user.id, 15); // 15min
-    const newToken = await this.tokenEncrypter.generate(user.id, 1); // 15min
-
+    const newToken = await this.tokenEncrypter.generate(user.id, 15); // 15min
     const newRefreshToken = await this.tokenEncrypter.generate(user.id, 60 * 24 * 7); // 7 days
-    // const newRefreshToken = await this.tokenEncrypter.generate(user.id, 10); // 7 5min
 
     let expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7);
