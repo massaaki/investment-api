@@ -4,14 +4,16 @@ type Response = {
     type: string
   },
   result?: {
-    message?: string
+    id?: string,
+    name?: string,
+    email?: string
   }
 }
 
 
 export default {
   Query: {
-    sayHello: (parent, args, context): Response => {
+    me: (parent, args, context): Response => {
       const auth = context.authentication
 
       if (auth.error) {
@@ -24,7 +26,9 @@ export default {
 
       return {
         result: {
-          message: 'hello world'
+          id: 'any-id',
+          name: 'any-name',
+          email: 'any-email'
         }
       }
     }

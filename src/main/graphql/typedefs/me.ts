@@ -7,15 +7,17 @@ export default gql`
   }
 
   type Result {
-    message: String
+    id: String
+    name: String
+    email: String
   }
 
-  type SayHelloResponse {
+  type Response {
     error: Error
     result: Result
   }
 
   extend type Query {
-    sayHello: SayHelloResponse!
+    me: Response!
   }
 `

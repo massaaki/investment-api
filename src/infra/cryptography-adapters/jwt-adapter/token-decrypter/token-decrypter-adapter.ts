@@ -10,7 +10,7 @@ export class TokenDecrypterAdapter implements ITokenDecrypter {
     const value: any = await verify(token, this.secret);
     if (value) {
       return {
-        expiresAt: new Date(value.exp),
+        expiresAt: new Date(value.exp * 1000),
         id: value.id
       };
     };
