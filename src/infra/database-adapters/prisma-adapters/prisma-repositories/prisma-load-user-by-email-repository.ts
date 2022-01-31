@@ -15,6 +15,8 @@ export class PrismaLoadUserByEmailRepository
       }
     });
 
+    await client.$disconnect();
+
     if (!user)
       return null;
 

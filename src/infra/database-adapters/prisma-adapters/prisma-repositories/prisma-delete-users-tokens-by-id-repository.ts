@@ -10,6 +10,8 @@ export class PrismaDeleteUsersByIdRepository implements IDeleteUsersTokensByIdRe
         id
       }
     });
+
+    await client.$disconnect();
   }
 
 }

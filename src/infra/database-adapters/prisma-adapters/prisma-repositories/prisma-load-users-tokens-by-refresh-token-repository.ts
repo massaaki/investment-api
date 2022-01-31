@@ -12,6 +12,8 @@ export class PrismaLoadUsersTokensByRefreshTokenRepository implements ILoadUsers
       }
     });
 
+    await client.$disconnect();
+
     if (!usersTokens) {
       return null;
     };

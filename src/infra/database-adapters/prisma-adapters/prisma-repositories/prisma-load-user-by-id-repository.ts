@@ -15,6 +15,8 @@ export class PrismaLoadUserByIdRepository
       }
     });
 
+    await client.$disconnect();
+
     if (!user)
       return null;
 

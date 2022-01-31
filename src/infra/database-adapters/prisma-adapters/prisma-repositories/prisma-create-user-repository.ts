@@ -22,6 +22,8 @@ export class PrismaCreateUserRepository
       }
     })
 
+    await client.$disconnect();
+
     return {
       id: newUser.id,
       name: newUser.name,

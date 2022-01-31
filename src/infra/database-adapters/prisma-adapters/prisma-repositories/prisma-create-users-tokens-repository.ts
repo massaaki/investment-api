@@ -12,5 +12,6 @@ export class PrismaCreateUsersTokensRepository implements ICreateUsersTokensRepo
         expiresAt
       }
     })
+    await client.$disconnect();
   }
 }
