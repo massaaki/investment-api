@@ -82,18 +82,45 @@ describe("## DbCreateStockMarketIndex UseCase", () => {
     })
   });
 
-  // describe("Create Stock Market", () => {})
+  describe("Create Stock Market", () => {
+    it("should returns null if code already exists", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut();
+
+      jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeStockMarketIndex())))
+
+      const response = await sut.create(makeFakeRequest());
+      expect(response).toBeNull()
+    });
+
+    it("should return a StockMarketIndex if CreateStockMarketIndex.create succeeds", async () => {
+      const { sut } = makeSut();
+
+      const stockMarketIndex = await sut.create(makeFakeRequest());
+      expect(stockMarketIndex).toEqual(makeFakeStockMarketIndex());
+    });
+  });
 
   describe("Throws", () => {
     it("should throw if CreateStockMarketIndexRepository.create throws", async () => {
       const { sut, createStockMarketIndexRepositoryStub } = makeSut();
       jest.spyOn(createStockMarketIndexRepositoryStub, 'create').mockImplementation(() => {
         throw new Error()
-      })
+      });
 
       const promise = sut.create(makeFakeRequest())
       await expect(promise).rejects.toThrow()
+    });
+
+    it("should throw if LoadStockMarketIndexByCodeRepository.loadByCode throws", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut()
+
+      jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode').mockImplementation(() => {
+        throw new Error();
+      });
+
+      const promise = sut.create(makeFakeRequest());
+      await expect(promise).rejects.toThrow();
     })
 
-  })
-})
+  });
+});
