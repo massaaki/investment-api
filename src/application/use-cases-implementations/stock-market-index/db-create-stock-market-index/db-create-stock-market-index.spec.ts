@@ -3,6 +3,7 @@ import { CreateStockMarketRequestProps } from "@/domain/use-cases-protocols/stoc
 import { DbCreateStockMarketIndex } from "./db-create-stock-market-index"
 import { ICreateMarketIndexRepository } from '@/application/infra-protocols/db/stock-market-index-repositories/create-stock-market-index-repository'
 import { IStockMarketIndex } from "@/domain/entities/stock-market-index"
+import { ILoadStockMarketIndexByCodeRepository } from "@/application/infra-protocols/db/stock-market-index-repositories/load-stock-market-index-by-code-repository"
 
 
 const makeFakeRequest = (): CreateStockMarketRequestProps => ({
@@ -19,6 +20,16 @@ const makeFakeStockMarketIndex = (): IStockMarketIndex => ({
   closesAt: '20:00'
 });
 
+
+const makeLoadStockMarketIndexByCodeRepositoryStub = () => {
+  class LoadStockMarketIndexByCodeRepositoryStub implements ILoadStockMarketIndexByCodeRepository {
+    async loadByCode(code: string): Promise<IStockMarketIndex> {
+      return new Promise(resolve => resolve(null))
+    }
+  }
+  return new LoadStockMarketIndexByCodeRepositoryStub();
+}
+
 const makeCreateStockMarketIndexRepositoryStub = () => {
   class CreateStockMarketIndexRepositoryStub implements ICreateMarketIndexRepository {
     create(request: CreateStockMarketRequestProps): Promise<IStockMarketIndex> {
@@ -32,14 +43,20 @@ const makeCreateStockMarketIndexRepositoryStub = () => {
 type makeSutType = {
   sut: DbCreateStockMarketIndex;
   createStockMarketIndexRepositoryStub: ICreateMarketIndexRepository;
+  loadStockMarketIndexByCodeRepositoryStub: ILoadStockMarketIndexByCodeRepository;
 }
 const makeSut = (): makeSutType => {
+  const loadStockMarketIndexByCodeRepositoryStub = makeLoadStockMarketIndexByCodeRepositoryStub();
   const createStockMarketIndexRepositoryStub = makeCreateStockMarketIndexRepositoryStub();
-  const sut = new DbCreateStockMarketIndex(createStockMarketIndexRepositoryStub);
+
+  const sut = new DbCreateStockMarketIndex(
+    loadStockMarketIndexByCodeRepositoryStub,
+    createStockMarketIndexRepositoryStub);
 
   return {
     sut,
-    createStockMarketIndexRepositoryStub
+    createStockMarketIndexRepositoryStub,
+    loadStockMarketIndexByCodeRepositoryStub
   }
 }
 
@@ -52,6 +69,16 @@ describe("## DbCreateStockMarketIndex UseCase", () => {
 
       await sut.create(makeFakeRequest());
       expect(createSpy).toHaveBeenCalledWith(makeFakeRequest());
+    })
+
+    it("should call LoadStockMarketIndexByCodeRepository.loadByCode with correct values", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut();
+      const loadByCodeSpy = jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode');
+
+      const request = makeFakeRequest();
+
+      await sut.create(request);
+      expect(loadByCodeSpy).toHaveBeenCalledWith(request.code);
     })
   });
 
