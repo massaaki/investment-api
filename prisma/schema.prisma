@@ -13,14 +13,19 @@ model migrations {
   name      String @db.VarChar
 }
 
+// # # # # # # # # # #
+// # USERS           #
+// # # # # # # # # # #
 model User {
-  id              String        @id @default(uuid())
+  id              String   @id @default(uuid())
   name            String
-  email           String        @unique()
-  hashed_password String        @db.VarChar
-  created_at      DateTime      @default(now())
-  updated_at      DateTime      @updatedAt
-  UsersTokens     UsersTokens[]
+  email           String   @unique()
+  hashed_password String   @db.VarChar
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
+
+  //Relations
+  UsersTokens UsersTokens[]
 
   @@map("users")
 }
@@ -29,10 +34,45 @@ model UsersTokens {
   id           String   @id @default(uuid())
   refreshToken String
   expiresAt    DateTime
-  userId       String?
-  user         User?    @relation(fields: [userId], references: [id])
   created_at   DateTime @default(now())
   updated_at   DateTime @updatedAt
 
+  //Relations
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id])
   @@map("users_tokens")
+}
+
+// # # # # # # # # # #
+// # STOCKS          #
+// # # # # # # # # # #
+model StockMarketIndex {
+  id         String   @id @default(uuid())
+  code       String   @unique
+  opensAt    String
+  closesAt   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  // Relations
+  StockMarketIndexDailyVariation StockMarketIndexDailyVariation[]
+
+  @@map("stock_market_indexes")
+}
+
+model StockMarketIndexDailyVariation {
+  id         String   @id @default(uuid())
+  value      Float
+  min        Float
+  max        Float
+  isOpened   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relations
+  stockMarketIndexId String?
+  stockMarketIndex   StockMarketIndex? @relation(fields: [stockMarketIndexId], references: [id])
+
+
+  @@map("stock_market_index_daily_variations")
 }
