@@ -1,29 +1,218 @@
-// type makeSutType = {
+import { IStockMarketIndex } from "@/domain/entities/stock-market-index";
+import { CreateStockMarketIndexDailyVariationRequestProps } from "@/domain/use-cases-protocols/stock-market-index.ts/create-stock-market-index-daily-variation";
 
-// }
-// const makeSut = (): makeSutType => {
+import { StockMarketIndexDailyVariationRequestDto } from "@/application/dtos/stock-market-index-daily-variation-dto/stock-market-index-daily-variation-request-dto";
+import { StockMarketIndexDailyVariationResponseDto } from "@/application/dtos/stock-market-index-daily-variation-dto/stock-market-index-daily-variation-response-dto";
+import { ICreateStockMarketIndexDailyVariationRepository } from "@/application/infra-protocols/db/stock-market-index-daily-variations-repositories/create-stock-market-index-daily-variation-repository";
+import { ILoadStockMarketIndexVariationDailyByCodeRepository } from "@/application/infra-protocols/db/stock-market-index-daily-variations-repositories/load-stock-market-index-variation-daily-by-code-repository";
+import { ILoadStockMarketIndexByCodeRepository } from "@/application/infra-protocols/db/stock-market-index-repositories/load-stock-market-index-by-code-repository";
+
+import { DbCreateStockMarketIndexDailyVariation } from "./db-create-stock-market-index-daily-variation";
+import { IUpdateStockMarketIndexDailyVariationRepository } from "@/application/infra-protocols/db/stock-market-index-daily-variations-repositories/update-stock-market-index-daily-variation-repository";
+import * as stockMarketHelper from '@/application/application-helpers/stock-market-time'
+
+jest.mock('@/application/application-helpers/stock-market-time', () => ({
+  isOpened: () => {
+    return true;
+  }
+}))
 
 
-//   const sut = null;
+const makeFakeRequest = (): CreateStockMarketIndexDailyVariationRequestProps => ({
+  code: 'any-code',
+  value: 89.00
+})
 
-//   return {
-//     sut,
-//   }
-// }
+const makeFakeStockMarketIndex = (): IStockMarketIndex => ({
+  id: 'any-id',
+  code: 'any-code',
+  opensAt: '8:00',
+  closesAt: '20:00'
+})
+
+const makeFakeStockMarketIndexDailyVariation = (): StockMarketIndexDailyVariationResponseDto => ({
+  id: 'any-id',
+  value: 89.12,
+  isOpened: true,
+  max: 99.00,
+  min: 74.30
+})
+
+const makeLoadStockMarketIndexByCodeRepositoryStub = () => {
+  class LoadStockMarketIndexByCodeRepositoryStub implements ILoadStockMarketIndexByCodeRepository {
+    async loadByCode(code: string): Promise<IStockMarketIndex> {
+      return new Promise(resolve => resolve(makeFakeStockMarketIndex()))
+    }
+  }
+  return new LoadStockMarketIndexByCodeRepositoryStub()
+}
+
+const makeLoadStockMarketIndexDailyByCodeRepositoryStub = () => {
+  class LoadStockMarketIndexDailyByCodeRepositoryStub implements ILoadStockMarketIndexVariationDailyByCodeRepository {
+    async loadByCode(code: string): Promise<StockMarketIndexDailyVariationResponseDto> {
+      return new Promise(resolve => resolve(null));
+    }
+  }
+  return new LoadStockMarketIndexDailyByCodeRepositoryStub();
+}
+
+const makeCreateStockMarketIndexDailyVariationRepositoryStub = () => {
+  class CreateStockMarketIndexDailyVariationRepositoryStub implements ICreateStockMarketIndexDailyVariationRepository {
+    async create(request: StockMarketIndexDailyVariationRequestDto): Promise<StockMarketIndexDailyVariationResponseDto> {
+      return new Promise(resolve => resolve(makeFakeStockMarketIndexDailyVariation()))
+    }
+  }
+
+  return new CreateStockMarketIndexDailyVariationRepositoryStub();
+}
+const makeUpdateStockMarketIndexDailyVariationRepositoryStub = () => {
+  class UpdateStockMarketIndexDailyVariationRepositoryStub implements IUpdateStockMarketIndexDailyVariationRepository {
+    async update(request: StockMarketIndexDailyVariationRequestDto): Promise<StockMarketIndexDailyVariationResponseDto> {
+      return new Promise(resolve => resolve({ ...makeFakeStockMarketIndexDailyVariation(), value: 93.00 }));
+    }
+  }
+
+  return new UpdateStockMarketIndexDailyVariationRepositoryStub();
+}
+
+
+type makeSutType = {
+  sut: DbCreateStockMarketIndexDailyVariation
+  loadStockMarketIndexByCodeRepositoryStub: ILoadStockMarketIndexByCodeRepository
+  loadStockMarketIndexDailyByCodeRepositoryStub: ILoadStockMarketIndexVariationDailyByCodeRepository
+  createStockMarketIndexDailyVariationRepositoryStub: ICreateStockMarketIndexDailyVariationRepository
+  updateStockMarketIndexDailyVariationRepositoryStub: IUpdateStockMarketIndexDailyVariationRepository
+}
+const makeSut = (): makeSutType => {
+  const loadStockMarketIndexByCodeRepositoryStub = makeLoadStockMarketIndexByCodeRepositoryStub()
+  const loadStockMarketIndexDailyByCodeRepositoryStub = makeLoadStockMarketIndexDailyByCodeRepositoryStub();
+  const createStockMarketIndexDailyVariationRepositoryStub = makeCreateStockMarketIndexDailyVariationRepositoryStub();
+  const updateStockMarketIndexDailyVariationRepositoryStub = makeUpdateStockMarketIndexDailyVariationRepositoryStub();
+
+  const sut = new DbCreateStockMarketIndexDailyVariation(
+    loadStockMarketIndexByCodeRepositoryStub,
+    loadStockMarketIndexDailyByCodeRepositoryStub,
+    createStockMarketIndexDailyVariationRepositoryStub,
+    updateStockMarketIndexDailyVariationRepositoryStub
+  );
+
+  return {
+    sut,
+    loadStockMarketIndexByCodeRepositoryStub,
+    loadStockMarketIndexDailyByCodeRepositoryStub,
+    createStockMarketIndexDailyVariationRepositoryStub,
+    updateStockMarketIndexDailyVariationRepositoryStub
+  }
+}
 
 
 describe("## DbCreateStockMarketDailyIndex UseCase", () => {
   describe("Verify", () => {
-    it("should", () => {
-      expect(1 + 1).toBe(2);
+    it("should calls loadStockMarketIndexByCodeRepository.loadByCode with correct values", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut();
+
+      const loadByCodeSpy = jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode');
+
+      await sut.create(makeFakeRequest());
+      expect(loadByCodeSpy).toHaveBeenCalledWith('any-code');
+    })
+
+    it("should calls loadStockMarketIndexDailyByCodeRepositoryStub.loadByCode with correct values", async () => {
+      const { sut, loadStockMarketIndexDailyByCodeRepositoryStub } = makeSut();
+
+      const loadByCodeSpy = jest.spyOn(loadStockMarketIndexDailyByCodeRepositoryStub, 'loadByCode');
+
+      await sut.create(makeFakeRequest());
+      expect(loadByCodeSpy).toHaveBeenCalledWith('any-code');
+    })
+
+    it("should calls createStockMarketIndexDailyVariationRepositoryStub.create with correct values", async () => {
+      const { sut, createStockMarketIndexDailyVariationRepositoryStub } = makeSut();
+
+      const createSpy = jest.spyOn(createStockMarketIndexDailyVariationRepositoryStub, 'create');
+
+      const request = makeFakeRequest();
+      await sut.create(request);
+      expect(createSpy).toHaveBeenCalledWith({ code: request.code, value: request.value });
+    })
+
+    it("should calls updateStockMarketIndexDailyVariationRepositoryStub.update with correct values", async () => {
+      const { sut, updateStockMarketIndexDailyVariationRepositoryStub, loadStockMarketIndexDailyByCodeRepositoryStub } = makeSut();
+
+      jest.spyOn(loadStockMarketIndexDailyByCodeRepositoryStub, 'loadByCode').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeStockMarketIndexDailyVariation())));
+
+      const updateSpy = jest.spyOn(updateStockMarketIndexDailyVariationRepositoryStub, 'update');
+
+      const request = makeFakeRequest();
+      await sut.create(request);
+      expect(updateSpy).toHaveBeenCalledWith({ code: request.code, value: request.value });
+    })
+
+  });
+
+  describe("Behavior", () => {
+    it("should return null if code in stockMarketIndex does not exists", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut();
+
+      jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode').mockReturnValueOnce(new Promise(resolve => resolve(null)));
+
+      const response = await sut.create(makeFakeRequest());
+      expect(response).toBeNull();
+    });
+
+    it("should return a stockMarketIndexDailyVariation if succeeds", async () => {
+      const { sut } = makeSut();
+
+      const response = await sut.create(makeFakeRequest());
+      expect(response).toEqual(makeFakeStockMarketIndexDailyVariation());
     })
   });
 
+  describe("Throws", () => {
+    it("should throw if loadStockMarketIndexByCodeRepository.loadByCode throws", async () => {
+      const { sut, loadStockMarketIndexByCodeRepositoryStub } = makeSut();
 
-  // describe("Behavior", () => {
-  // });
+      jest.spyOn(loadStockMarketIndexByCodeRepositoryStub, 'loadByCode').mockImplementation(() => {
+        throw new Error();
+      });
 
-  // describe("Throws", () => {
+      const promise = sut.create(makeFakeRequest());
+      await expect(promise).rejects.toThrow();
+    });
 
-  // });
+    it("should throw if loadStockMarketIndexDailyByCodeRepositoryStub.loadByCode throws", async () => {
+      const { sut, loadStockMarketIndexDailyByCodeRepositoryStub } = makeSut();
+
+      jest.spyOn(loadStockMarketIndexDailyByCodeRepositoryStub, 'loadByCode').mockImplementation(() => {
+        throw new Error();
+      });
+
+      const promise = sut.create(makeFakeRequest());
+      await expect(promise).rejects.toThrow();
+    });
+
+    it("should throw if createStockMarketIndexDailyVariationRepositoryStub.create throws", async () => {
+      const { sut, createStockMarketIndexDailyVariationRepositoryStub } = makeSut();
+
+      jest.spyOn(createStockMarketIndexDailyVariationRepositoryStub, 'create').mockImplementation(() => {
+        throw new Error();
+      });
+
+      const promise = sut.create(makeFakeRequest());
+      await expect(promise).rejects.toThrow();
+    });
+
+    it("should throw if updateStockMarketIndexDailyVariationRepositoryStub.update throws", async () => {
+      const { sut, updateStockMarketIndexDailyVariationRepositoryStub, loadStockMarketIndexDailyByCodeRepositoryStub } = makeSut();
+      jest.spyOn(loadStockMarketIndexDailyByCodeRepositoryStub, 'loadByCode').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeStockMarketIndexDailyVariation())));
+
+      jest.spyOn(updateStockMarketIndexDailyVariationRepositoryStub, 'update').mockImplementation(() => {
+        throw new Error();
+      });
+
+      const promise = sut.create(makeFakeRequest());
+      await expect(promise).rejects.toThrow();
+    });
+
+  });
 });
