@@ -1,9 +1,8 @@
 import { IStockMarketIndexDailyVariation } from "@/domain/entities/stock-market-index";
 
 export type CreateStockMarketIndexDailyVariationRequestProps = {
-  code: string
-  opensAt: string
-  closesAt: string
+  code: string;
+  value: number;
 }
 
 export interface ICreateStockMarketIndexDailyVariationIndex {
