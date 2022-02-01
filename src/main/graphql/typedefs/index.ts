@@ -6,6 +6,8 @@ import renewRefreshToken from './renew-refresh-token';
 import sayHello from './say-hello';
 import me from './me';
 
+// Stock market Index
+import createStockMarketIndex from './stock-market-index/create-stock-market-index-typedef'
 
 export default [
   base,
@@ -13,5 +15,6 @@ export default [
   login,
   renewRefreshToken,
   sayHello,
-  me
+  me,
+  createStockMarketIndex
 ]
