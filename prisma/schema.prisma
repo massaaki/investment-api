@@ -20,6 +20,7 @@ model User {
   id              String   @id @default(uuid())
   name            String
   email           String   @unique()
+  is_admin        Boolean  @default(false)
   hashed_password String   @db.VarChar
   created_at      DateTime @default(now())
   updated_at      DateTime @updatedAt

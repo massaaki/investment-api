@@ -1,3 +1,4 @@
+import { Client } from '@/infra/database-adapters/prisma-adapters/client'
 import { ApolloServer } from 'apollo-server-express';
 import { Express } from "express";
 
@@ -17,8 +18,12 @@ const validateAuthentication = async (token: string) => {
 
     //Pending verify token expired
 
+    //verify if isAdmin
+    const user = await Client.getInstance().user.findFirst({ where: { id: decoded.id } })
+
     return {
-      id: decoded.id
+      id: decoded.id,
+      isAdmin: user.is_admin
     }
 
   } catch (error) {

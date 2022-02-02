@@ -60,6 +60,7 @@ export class DbCreateStockMarketIndexDailyVariation implements ICreateStockMarke
       value: scrapResponse.value
     });
 
+
     return stockMarketIndexDailyVariation;
   }
 }

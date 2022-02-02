@@ -6,6 +6,7 @@ import me from './me';
 
 // Stock Market Index
 import createStockMarketIndex from './stock-market-index/create-stock-market-index-resolver'
+import createStockMarketIndexDailyVariation from './stock-market-index-daily-variation/create-stock-market-index-daily-variation'
 
 export default [
   signup,
@@ -13,5 +14,6 @@ export default [
   renewRefreshToken,
   sayHello,
   me,
-  createStockMarketIndex
+  createStockMarketIndex,
+  createStockMarketIndexDailyVariation
 ];
