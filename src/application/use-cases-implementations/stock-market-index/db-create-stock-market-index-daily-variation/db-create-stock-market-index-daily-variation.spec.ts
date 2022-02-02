@@ -9,7 +9,17 @@ import { ILoadStockMarketIndexByCodeRepository } from "@/application/infra-proto
 
 import { DbCreateStockMarketIndexDailyVariation } from "./db-create-stock-market-index-daily-variation";
 import { IUpdateStockMarketIndexDailyVariationRepository } from "@/application/infra-protocols/db/stock-market-index-daily-variations-repositories/update-stock-market-index-daily-variation-repository";
-import * as stockMarketHelper from '@/application/application-helpers/stock-market-time'
+import { ICrawlerFindStockIndexValue } from "@/application/infra-protocols/web-crawler/crawler-find-stock-index-value";
+import { CrawlerFindStockIndexValueRequestDto } from "@/application/dtos/crawler-find-stock-index-value-dto/crawler-find-stock-index-value-request-dto";
+import { CrawlerFindStockIndexValueResponseDto } from "@/application/dtos/crawler-find-stock-index-value-dto/crawler-find-stock-index-value-response-dto";
+
+
+jest.mock('@/application/application-helpers/stock-market-time', () => ({
+  isOpened: () => {
+    return true;
+  }
+}))
+
 
 jest.mock('@/application/application-helpers/stock-market-time', () => ({
   isOpened: () => {
@@ -21,6 +31,12 @@ jest.mock('@/application/application-helpers/stock-market-time', () => ({
 const makeFakeRequest = (): CreateStockMarketIndexDailyVariationRequestProps => ({
   code: 'any-code',
   value: 89.00
+})
+
+
+const makeFakeCrawlerFindStockIndexRequest = (): CrawlerFindStockIndexValueRequestDto => ({
+  code: 'any-code',
+  siteUrl: 'https://finance.yahoo.com/quote/%5EBVSP'
 })
 
 const makeFakeStockMarketIndex = (): IStockMarketIndex => ({
@@ -37,6 +53,16 @@ const makeFakeStockMarketIndexDailyVariation = (): StockMarketIndexDailyVariatio
   max: 99.00,
   min: 74.30
 })
+
+
+const makeCrawlerFindStockIndexValueStub = (): ICrawlerFindStockIndexValue => {
+  class CrawlerFindStockIndexValueStub implements ICrawlerFindStockIndexValue {
+    async scrap(request: CrawlerFindStockIndexValueRequestDto): Promise<CrawlerFindStockIndexValueResponseDto> {
+      return new Promise(resolve => resolve({ value: 89.0 }))
+    }
+  }
+  return new CrawlerFindStockIndexValueStub();
+}
 
 const makeLoadStockMarketIndexByCodeRepositoryStub = () => {
   class LoadStockMarketIndexByCodeRepositoryStub implements ILoadStockMarketIndexByCodeRepository {
@@ -82,18 +108,21 @@ type makeSutType = {
   loadStockMarketIndexDailyByCodeRepositoryStub: ILoadStockMarketIndexVariationDailyByCodeRepository
   createStockMarketIndexDailyVariationRepositoryStub: ICreateStockMarketIndexDailyVariationRepository
   updateStockMarketIndexDailyVariationRepositoryStub: IUpdateStockMarketIndexDailyVariationRepository
+  crawlerFindStockIndexValueStub: ICrawlerFindStockIndexValue
 }
 const makeSut = (): makeSutType => {
   const loadStockMarketIndexByCodeRepositoryStub = makeLoadStockMarketIndexByCodeRepositoryStub()
   const loadStockMarketIndexDailyByCodeRepositoryStub = makeLoadStockMarketIndexDailyByCodeRepositoryStub();
   const createStockMarketIndexDailyVariationRepositoryStub = makeCreateStockMarketIndexDailyVariationRepositoryStub();
   const updateStockMarketIndexDailyVariationRepositoryStub = makeUpdateStockMarketIndexDailyVariationRepositoryStub();
+  const crawlerFindStockIndexValueStub = makeCrawlerFindStockIndexValueStub();
 
   const sut = new DbCreateStockMarketIndexDailyVariation(
     loadStockMarketIndexByCodeRepositoryStub,
     loadStockMarketIndexDailyByCodeRepositoryStub,
     createStockMarketIndexDailyVariationRepositoryStub,
-    updateStockMarketIndexDailyVariationRepositoryStub
+    updateStockMarketIndexDailyVariationRepositoryStub,
+    crawlerFindStockIndexValueStub
   );
 
   return {
@@ -101,7 +130,8 @@ const makeSut = (): makeSutType => {
     loadStockMarketIndexByCodeRepositoryStub,
     loadStockMarketIndexDailyByCodeRepositoryStub,
     createStockMarketIndexDailyVariationRepositoryStub,
-    updateStockMarketIndexDailyVariationRepositoryStub
+    updateStockMarketIndexDailyVariationRepositoryStub,
+    crawlerFindStockIndexValueStub
   }
 }
 
@@ -148,6 +178,16 @@ describe("## DbCreateStockMarketDailyIndex UseCase", () => {
       expect(updateSpy).toHaveBeenCalledWith({ code: request.code, value: request.value });
     })
 
+    it("should calls crawlerFindStockIndexValueStub.scrap with correct values", async () => {
+      const { sut, crawlerFindStockIndexValueStub } = makeSut()
+
+      const scrapSpy = jest.spyOn(crawlerFindStockIndexValueStub, 'scrap');
+
+      await sut.create(makeFakeRequest());
+
+      expect(scrapSpy).toHaveBeenCalledWith(makeFakeCrawlerFindStockIndexRequest())
+
+    })
   });
 
   describe("Behavior", () => {
