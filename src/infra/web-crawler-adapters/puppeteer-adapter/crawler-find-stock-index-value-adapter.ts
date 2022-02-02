@@ -37,7 +37,7 @@ export class CrawlerFindStockIndexValueAdapter implements ICrawlerFindStockIndex
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
 
-      await page.goto(`https://finance.yahoo.com/quote/${codeOnWeb}`, {
+      await page.goto(`https://finance.yahoo.com/quote/%5EBVSP`, {
         waitUntil: 'networkidle2'
       });
 
