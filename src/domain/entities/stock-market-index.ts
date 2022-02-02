@@ -6,9 +6,9 @@ export interface IStockMarketIndex {
 }
 
 export interface IStockMarketIndexDailyVariation {
-  id: string
-  value: number
-  min: number
-  max: number
-  isOpened: boolean
+  id?: string
+  value?: number
+  min?: number
+  max?: number
+  isOpened?: boolean
 }

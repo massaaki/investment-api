@@ -1,3 +1,11 @@
+import { IStockMarketIndexDailyVariation } from "@/domain/entities/stock-market-index";
+
+export type ScrapStockMarketIndexDailyVariationRequest = {
+  code: string;
+  siteUrl: string;
+}
+
+
 export interface IScrapStockMarketIndexDailyVariation {
-  scrap(code: string): Promise<any>
+  scrap(request: ScrapStockMarketIndexDailyVariationRequest): Promise<IStockMarketIndexDailyVariation>
 }
