@@ -5,6 +5,9 @@
   "repository": "https://github.com/massaaki/investment-api.git",
   "author": "massaaki <eu@massaaki.com>",
   "license": "MIT",
+  "prisma": {
+    "seed": "ts-node-dev prisma/seed.ts"
+  },
   "scripts": {
     "build": "rimraf dist && babel src --extensions \".js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "start": "NODE_ENV=production node dist/main/server.js",
