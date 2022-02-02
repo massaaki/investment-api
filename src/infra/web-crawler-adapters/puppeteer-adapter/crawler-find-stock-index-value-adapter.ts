@@ -42,7 +42,7 @@ export class CrawlerFindStockIndexValueAdapter implements ICrawlerFindStockIndex
       });
       const page = await browser.newPage();
 
-      await page.goto(`https://finance.yahoo.com/quote/VALE3.SA`, {
+      await page.goto(`https://finance.yahoo.com/quote/%5EBVSP`, {
         waitUntil: 'networkidle2'
       });
 
