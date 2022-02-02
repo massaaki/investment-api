@@ -4,7 +4,8 @@
     "target": "es2019",
     "module": "commonjs",
     "lib": [
-      "ES6"
+      "ES6",
+      "DOM"
     ],
     "baseUrl": ".",
     "paths": {
