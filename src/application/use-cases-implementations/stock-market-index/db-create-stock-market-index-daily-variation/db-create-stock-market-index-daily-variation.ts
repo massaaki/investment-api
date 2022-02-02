@@ -42,25 +42,33 @@ export class DbCreateStockMarketIndexDailyVariation implements ICreateStockMarke
       return null;
     }
 
-    //STEP 4 - verify if code is already registred in daily
-    const alreadyRegistredToday = await this.loadStockMarketIndexDailyByCodeRepository.loadByCode(code);
-
-    //STEP 5 -  if not create a new one
-    if (!alreadyRegistredToday) {
-      const stockMarketIndexDailyVariation = await this.createStockMarketIndexDailyVariationRepository.create({
-        code,
-        value: scrapResponse.value
-      });
-      return stockMarketIndexDailyVariation;
+    return {
+      id: 'any-id',
+      isOpened: true,
+      value: scrapResponse.value,
+      min: scrapResponse.value,
+      max: scrapResponse.value
     }
 
+    //STEP 4 - verify if code is already registred in daily
+    // const alreadyRegistredToday = await this.loadStockMarketIndexDailyByCodeRepository.loadByCode(code);
+
+    //STEP 5 -  if not create a new one
+    // if (!alreadyRegistredToday) {
+    //   const stockMarketIndexDailyVariation = await this.createStockMarketIndexDailyVariationRepository.create({
+    //     code,
+    //     value: scrapResponse.value
+    //   });
+    //   return stockMarketIndexDailyVariation;
+    // }
+
     //STEP 6 -  if already exists update them
-    const stockMarketIndexDailyVariation = await this.updateStockMarketIndexDailyVariationRepository.update({
-      code,
-      value: scrapResponse.value
-    });
+    // const stockMarketIndexDailyVariation = await this.updateStockMarketIndexDailyVariationRepository.update({
+    //   code,
+    //   value: scrapResponse.value
+    // });
 
 
-    return stockMarketIndexDailyVariation;
+    // return stockMarketIndexDailyVariation;
   }
 }
