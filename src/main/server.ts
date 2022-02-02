@@ -1,16 +1,10 @@
 import 'reflect-metadata';
 import app from "./config/app";
 import { env } from './config/env';
-import { createOrUpdateStockDailyVariation } from './cron/stock-market-index-daily-variation/create-or-update';
+import { startCrawler } from './cron/cron';
 
 
+startCrawler()
 app.listen(env.port, async () => {
   console.log(`Server running at http://localhost:${env.port}`);
-
-
-  //cron jobs
-  console.log('starting crawling');
-  await createOrUpdateStockDailyVariation();
-  console.log('ended crawling');
-
 });
