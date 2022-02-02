@@ -10,6 +10,7 @@ export default gql`
     id: String
     name: String
     email: String
+    isAdmin: Boolean
   }
 
   type Response {
