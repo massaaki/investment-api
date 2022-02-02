@@ -49,6 +49,7 @@ export class DbAuthenticate implements IAuthenticate {
 
     return {
       id: user.id,
+      isAdmin: user.isAdmin,
       token: newToken,
       refreshToken: newRefreshToken
     }

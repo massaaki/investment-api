@@ -24,6 +24,7 @@ export class LoginController implements IController {
 
       const viewModel: LoginUserViewModel = {
         id: session.id,
+        isAdmin: session.isAdmin,
         token: session.token,
         refreshToken: session.refreshToken
       }

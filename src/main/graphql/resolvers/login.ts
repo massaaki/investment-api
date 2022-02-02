@@ -3,6 +3,7 @@ import { HttpRequest } from "@/presentation/protocols/http";
 
 type LoginResponse = {
   id: string;
+  isAdmin: boolean;
   token: string;
   refreshToken: string
 }
@@ -24,6 +25,7 @@ export default {
 
       return {
         id: httpResponse.body.id,
+        isAdmin: httpResponse.body.isAdmin,
         token: httpResponse.body.token,
         refreshToken: httpResponse.body.refreshToken
       };

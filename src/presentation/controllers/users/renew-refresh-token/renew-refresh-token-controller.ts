@@ -21,6 +21,7 @@ export class RenewRefreshTokenController implements IController {
 
       const viewModel: RefreshTokenViewModel = {
         id: session.id,
+        isAdmin: session.isAdmin,
         token: session.token,
         refreshToken: session.refreshToken
       }

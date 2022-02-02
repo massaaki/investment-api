@@ -25,6 +25,7 @@ export class PrismaLoadUserByEmailRepository
       id: user.id,
       name: user.name,
       email: user.email,
+      isAdmin: user.is_admin,
       password: user.hashed_password
     }
   }

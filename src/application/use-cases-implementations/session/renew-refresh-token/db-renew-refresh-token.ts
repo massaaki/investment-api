@@ -62,6 +62,7 @@ export class DbRenewRefreshToken implements IRenewRefreshToken {
 
     return {
       id: user.id,
+      isAdmin: user.isAdmin,
       token: newToken,
       refreshToken: newRefreshToken
     };
