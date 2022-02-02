@@ -46,7 +46,13 @@ export default {
       }
 
       const response = await controller.handle(httpRequest);
-
+      if (!response) {
+        return {
+          error: {
+            type: `response error ${response}`
+          }
+        }
+      }
       return {
         result: {
           value: response.body.value
