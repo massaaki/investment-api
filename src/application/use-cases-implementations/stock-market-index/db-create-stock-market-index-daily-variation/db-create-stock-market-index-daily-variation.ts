@@ -32,7 +32,6 @@ export class DbCreateStockMarketIndexDailyVariation implements ICreateStockMarke
       return null;
     }
 
-
     //STEP 3 - Get Market Value from crawler
     const scrapResponse = await this.crawlerFindStockIndexValue.scrap({
       code,
@@ -43,12 +42,8 @@ export class DbCreateStockMarketIndexDailyVariation implements ICreateStockMarke
       return null;
     }
 
-
-
-
     //STEP 4 - verify if code is already registred in daily
     const alreadyRegistredToday = await this.loadStockMarketIndexDailyByCodeRepository.loadByCode(code);
-
 
     //STEP 5 -  if not create a new one
     if (!alreadyRegistredToday) {
@@ -64,6 +59,7 @@ export class DbCreateStockMarketIndexDailyVariation implements ICreateStockMarke
       code,
       value: scrapResponse.value
     });
+
     return stockMarketIndexDailyVariation;
   }
 }

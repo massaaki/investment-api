@@ -26,15 +26,12 @@ export class CrawlerFindStockIndexValueAdapter implements ICrawlerFindStockIndex
   async scrap(request: CrawlerFindStockIndexValueRequestDto): Promise<CrawlerFindStockIndexValueResponseDto> {
     try {
       const { code, siteUrl } = request;
-      let codeOnWeb = null;
+      let codeOnWeb = '';
 
       switch (code) {
         case 'IBOV': {
           codeOnWeb = '%5EBVSP';
         };
-        default: {
-          codeOnWeb = null;
-        }
       }
 
       const browser = await puppeteer.launch();
@@ -43,7 +40,6 @@ export class CrawlerFindStockIndexValueAdapter implements ICrawlerFindStockIndex
       await page.goto(`https://finance.yahoo.com/quote/${codeOnWeb}`, {
         waitUntil: 'networkidle2'
       });
-
 
       // select element
       const result: any = await page.evaluate(() => {

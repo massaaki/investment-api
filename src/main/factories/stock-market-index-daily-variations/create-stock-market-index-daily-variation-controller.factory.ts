@@ -3,6 +3,7 @@ import { PrismaCreateStockMarketIndexDailyVariationRepository } from "@/infra/da
 import { PrismaLoadStockMarketIndexVariationDailyByCodeRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/stock-market-index-daily-variation-repositories/prisma-load-stock-market-index-variation-daily-by-code-repository";
 import { PrismaUpdateStockMarketIndexDailyVariationRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/stock-market-index-daily-variation-repositories/prisma-update-stock-market-index-daily-variation-repository";
 import { PrismaLoadStockMarketIndexByCodeRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/stock-market-index-repositories/prisma-load-stock-market-index-by-code-repository";
+import { CrawlerFindStockIndexValueAdapter } from "@/infra/web-crawler-adapters/puppeteer-adapter/crawler-find-stock-index-value-adapter";
 import { CreateStockMarketIndexDailyVariationController } from "@/presentation/controllers/stock-market-index-daily-variation/create-stock-market-index-daily-variation-controller";
 import { IController } from "@/presentation/protocols/controller";
 
@@ -10,13 +11,15 @@ export const makeCreateStockMarketIndexDailyVariationController = (): IControlle
   const loadStockMarketIndexByCodeRepository = new PrismaLoadStockMarketIndexByCodeRepository();
   const loadStockMarketIndexDailyByCodeRepository = new PrismaLoadStockMarketIndexVariationDailyByCodeRepository();
   const createStockMarketIndexDailyVariationRepository = new PrismaCreateStockMarketIndexDailyVariationRepository();
-  const updateStockMarketIndexDailyVariationRepository = new PrismaUpdateStockMarketIndexDailyVariationRepository()
+  const updateStockMarketIndexDailyVariationRepository = new PrismaUpdateStockMarketIndexDailyVariationRepository();
+  const crawlerFindStockIndexValueAdapter = new CrawlerFindStockIndexValueAdapter();
 
   const createStockMarketIndexDailyVariation = new DbCreateStockMarketIndexDailyVariation(
     loadStockMarketIndexByCodeRepository,
     loadStockMarketIndexDailyByCodeRepository,
     createStockMarketIndexDailyVariationRepository,
-    updateStockMarketIndexDailyVariationRepository
+    updateStockMarketIndexDailyVariationRepository,
+    crawlerFindStockIndexValueAdapter
   );
 
   const createStockMarketIndexDailyVariationController = new CreateStockMarketIndexDailyVariationController(createStockMarketIndexDailyVariation);
