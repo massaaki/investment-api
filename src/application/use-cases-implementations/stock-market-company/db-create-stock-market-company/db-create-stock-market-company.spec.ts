@@ -81,7 +81,17 @@ describe("## DbCreateStockMarketCompany UseCase", () => {
 
   });
 
-  // describe("Behavior", () => {})
+  describe("Behavior", () => {
+    it("should return null if code already exists", async () => {
+      const { sut, loadStockMarketCompanyByCodeRepositoryStub } = makeSut();
+
+      jest.spyOn(loadStockMarketCompanyByCodeRepositoryStub, 'loadByCode').mockReturnValueOnce(new Promise(resolve => resolve(makeFakeStockMarketCompany())))
+
+      const response = await sut.create(makeFakeRequest());
+
+      expect(response).toBeNull();
+    });
+  })
 
   describe("Throws", () => {
     it("should throw if createStockMarketRepository.create throws", async () => {
