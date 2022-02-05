@@ -45,7 +45,7 @@ model UsersTokens {
 }
 
 // # # # # # # # # # #
-// # STOCKS          #
+// # STOCKS INDEX    #
 // # # # # # # # # # #
 model StockMarketIndex {
   id         String   @id @default(uuid())
@@ -76,4 +76,37 @@ model StockMarketIndexDailyVariation {
 
 
   @@map("stock_market_index_daily_variations")
+}
+
+// # # # # # # # # # #
+// # STOCKS          #
+// # # # # # # # # # #
+
+model StockMarketCompany {
+  id   String @id @default(uuid())
+  name String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relations
+  StockMarketCompanyValues StockMarketCompanyValues[]
+
+  @@map("stock_market_companies")
+}
+
+model StockMarketCompanyValues {
+  id    String @id @default(uuid())
+  value Float
+  min   Float
+  max   Float
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  //Relations
+  stockMarketCompanyId String?
+  stockMarketCompany   StockMarketCompany? @relation(fields: [stockMarketCompanyId], references: [id])
+
+  @@map("stock_market_company_values")
 }
