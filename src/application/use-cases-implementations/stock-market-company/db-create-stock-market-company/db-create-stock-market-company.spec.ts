@@ -91,6 +91,14 @@ describe("## DbCreateStockMarketCompany UseCase", () => {
 
       expect(response).toBeNull();
     });
+
+    it("should return a StockMarketCompany if DbCreateStockMarketCompany succeeds", async () => {
+      const { sut } = makeSut();
+
+      const response = await sut.create(makeFakeRequest());
+
+      expect(response).toEqual(makeFakeStockMarketCompany());
+    })
   })
 
   describe("Throws", () => {

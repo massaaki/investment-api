@@ -22,9 +22,7 @@ export class DbCreateStockMarketCompany implements ICreateStockMarketCompany {
 
     const stockMarketCompany = await this.creeateStockMarketCompanyRepository.create({ code, name });
 
-
-
-    return null;
+    return stockMarketCompany;
   }
 
 }
