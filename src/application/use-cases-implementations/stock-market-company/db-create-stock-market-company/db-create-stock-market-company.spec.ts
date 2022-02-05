@@ -69,7 +69,7 @@ describe("## DbCreateStockMarketCompany UseCase", () => {
       });
     });
 
-    it("should calls loadStockMarketRepositoryByCode.loadByCode with correct values", async () => {
+    it("should calls loadStockMarketCompanyByCodeRepositoryStub.loadByCode with correct values", async () => {
       const { sut, loadStockMarketCompanyByCodeRepositoryStub } = makeSut();
 
       const loadByCodeSpy = jest.spyOn(loadStockMarketCompanyByCodeRepositoryStub, 'loadByCode');
@@ -77,13 +77,33 @@ describe("## DbCreateStockMarketCompany UseCase", () => {
       await sut.create(makeFakeRequest());
 
       expect(loadByCodeSpy).toHaveBeenCalledWith('any-code');
-
-
     });
 
   });
 
   // describe("Behavior", () => {})
 
-  // describe("Throws", () => {})
+  describe("Throws", () => {
+    it("should throw if createStockMarketRepository.create throws", async () => {
+      const { sut, createStockMarketCompanyRepositoryStub } = makeSut();
+      jest.spyOn(createStockMarketCompanyRepositoryStub, 'create').mockImplementation(() => {
+        throw new Error();
+      })
+
+      const promise = sut.create(makeFakeRequest())
+
+      await expect(promise).rejects.toThrow();
+    });
+
+    it("should throw if loadStockMarketCompanyByCodeRepositoryStub.loadByCode throws", async () => {
+      const { sut, loadStockMarketCompanyByCodeRepositoryStub } = makeSut();
+      jest.spyOn(loadStockMarketCompanyByCodeRepositoryStub, 'loadByCode').mockImplementation(() => {
+        throw new Error();
+      })
+
+      const promise = sut.create(makeFakeRequest())
+
+      await expect(promise).rejects.toThrow();
+    });
+  });
 });
