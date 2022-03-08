@@ -6,10 +6,8 @@ import { IWebRequestStockInformations } from "@/application/infra-protocols/web-
 
 export class WebRequestStockInformations implements IWebRequestStockInformations {
   async getStocksInformations(request: WebGetStockInformationsRequestDTO): Promise<WebGetStockInformationsResponseDTO> {
-    const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${request.code}.SA&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`);
-    // const response = mockResult;
+    const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${request.code}&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`);
 
-    // const history = Object.entries(response.data['Time Series (Daily)'])
     const history = Object.entries(response.data['Time Series (Daily)']).map(stock => {
       const date = new Date(stock[0]);
 
