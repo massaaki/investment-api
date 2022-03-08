@@ -1,5 +1,5 @@
 import { IStockMarketIndex } from "@/domain/entities/stock-market-index";
-import { CreateStockMarketRequestProps, ICreateStockMarketIndex } from "@/domain/use-cases-protocols/stock-market-index.ts/create-stock-market-index";
+import { CreateStockMarketRequestProps, ICreateStockMarketIndex } from "@/domain/use-cases-protocols/stock-market-index/create-stock-market-index";
 import { ICreateMarketIndexRepository } from "@/application/infra-protocols/db/stock-market-index-repositories/create-stock-market-index-repository";
 import { ILoadStockMarketIndexByCodeRepository } from "@/application/infra-protocols/db/stock-market-index-repositories/load-stock-market-index-by-code-repository";
 

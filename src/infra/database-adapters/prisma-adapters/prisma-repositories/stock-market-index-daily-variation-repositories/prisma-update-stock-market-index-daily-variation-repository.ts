@@ -2,7 +2,7 @@
 import { Client } from '../../client';
 import { IUpdateStockMarketIndexDailyVariationRepository } from "@/application/infra-protocols/db/stock-market-index-daily-variations-repositories/update-stock-market-index-daily-variation-repository";
 import { IStockMarketIndexDailyVariation } from "@/domain/entities/stock-market-index";
-import { CreateStockMarketIndexDailyVariationRequestProps } from "@/domain/use-cases-protocols/stock-market-index.ts/create-stock-market-index-daily-variation";
+import { CreateStockMarketIndexDailyVariationRequestProps } from "@/domain/use-cases-protocols/stock-market-index/create-stock-market-index-daily-variation";
 
 export class PrismaUpdateStockMarketIndexDailyVariationRepository implements IUpdateStockMarketIndexDailyVariationRepository {
   async update(request: CreateStockMarketIndexDailyVariationRequestProps): Promise<IStockMarketIndexDailyVariation> {

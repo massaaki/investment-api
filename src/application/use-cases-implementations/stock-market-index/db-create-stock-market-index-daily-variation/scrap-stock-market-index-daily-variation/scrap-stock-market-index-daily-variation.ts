@@ -1,6 +1,6 @@
 import { ICrawlerFindStockIndexValue } from "@/application/infra-protocols/web-crawler/crawler-find-stock-index-value";
 import { IStockMarketIndexDailyVariation } from "@/domain/entities/stock-market-index";
-import { IScrapStockMarketIndexDailyVariation, ScrapStockMarketIndexDailyVariationRequest } from "@/domain/use-cases-protocols/stock-market-index.ts/scrap-stock-market-index-daily-variation";
+import { IScrapStockMarketIndexDailyVariation, ScrapStockMarketIndexDailyVariationRequest } from "@/domain/use-cases-protocols/stock-market-index/scrap-stock-market-index-daily-variation";
 
 export class ScrapStockMarketIndexDailyVariation implements IScrapStockMarketIndexDailyVariation {
 

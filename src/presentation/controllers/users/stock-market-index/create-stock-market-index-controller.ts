@@ -1,4 +1,4 @@
-import { ICreateStockMarketIndex } from "@/domain/use-cases-protocols/stock-market-index.ts/create-stock-market-index";
+import { ICreateStockMarketIndex } from "@/domain/use-cases-protocols/stock-market-index/create-stock-market-index";
 import { ok, serverError } from "@/presentation/helpers/http-helper";
 import { IController } from "@/presentation/protocols/controller";
 import { HttpRequest, HttpResponse } from "@/presentation/protocols/http";

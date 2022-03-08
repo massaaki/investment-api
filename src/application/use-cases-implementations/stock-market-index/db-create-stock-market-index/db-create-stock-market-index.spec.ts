@@ -1,4 +1,4 @@
-import { CreateStockMarketRequestProps } from "@/domain/use-cases-protocols/stock-market-index.ts/create-stock-market-index"
+import { CreateStockMarketRequestProps } from "@/domain/use-cases-protocols/stock-market-index/create-stock-market-index"
 
 import { DbCreateStockMarketIndex } from "./db-create-stock-market-index"
 import { ICreateMarketIndexRepository } from '@/application/infra-protocols/db/stock-market-index-repositories/create-stock-market-index-repository'

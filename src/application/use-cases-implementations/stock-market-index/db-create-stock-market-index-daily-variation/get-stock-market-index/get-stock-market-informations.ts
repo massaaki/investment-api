@@ -1,5 +1,5 @@
 import { IWebRequestStockInformations } from "@/application/infra-protocols/web-request/web-request-stock-informations";
-import { GetStockMarketInformationsRequest, GetStockMarketInformationsResponse, IGetStockMarketInformations } from "@/domain/use-cases-protocols/stock-market-index.ts/get-stock-market-index";
+import { GetStockMarketInformationsRequest, GetStockMarketInformationsResponse, IGetStockMarketInformations } from "@/domain/use-cases-protocols/stock-market-index/get-stock-market-index";
 
 
 export class GetStockMarketInformations implements IGetStockMarketInformations {

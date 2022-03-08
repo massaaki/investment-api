@@ -4,10 +4,14 @@ import { PrismaLoadStockMarketIndexVariationDailyByCodeRepository } from "@/infr
 import { PrismaUpdateStockMarketIndexDailyVariationRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/stock-market-index-daily-variation-repositories/prisma-update-stock-market-index-daily-variation-repository";
 import { PrismaLoadStockMarketIndexByCodeRepository } from "@/infra/database-adapters/prisma-adapters/prisma-repositories/stock-market-index-repositories/prisma-load-stock-market-index-by-code-repository";
 import { CrawlerFindStockIndexValueAdapter } from "@/infra/web-crawler-adapters/puppeteer-adapter/crawler-find-stock-index-value-adapter";
+import { WebRequestStockInformations } from "@/infra/web-request-adapters/axios/web-request-stock-informations";
 import { CreateStockMarketIndexDailyVariationController } from "@/presentation/controllers/stock-market-index-daily-variation/create-stock-market-index-daily-variation-controller";
 import { IController } from "@/presentation/protocols/controller";
 
 export const makeCreateStockMarketIndexDailyVariationController = (): IController => {
+
+  const webRequestStockInformations = new WebRequestStockInformations();
+
   const loadStockMarketIndexByCodeRepository = new PrismaLoadStockMarketIndexByCodeRepository();
   const loadStockMarketIndexDailyByCodeRepository = new PrismaLoadStockMarketIndexVariationDailyByCodeRepository();
   const createStockMarketIndexDailyVariationRepository = new PrismaCreateStockMarketIndexDailyVariationRepository();
@@ -19,7 +23,8 @@ export const makeCreateStockMarketIndexDailyVariationController = (): IControlle
     loadStockMarketIndexDailyByCodeRepository,
     createStockMarketIndexDailyVariationRepository,
     updateStockMarketIndexDailyVariationRepository,
-    crawlerFindStockIndexValueAdapter
+    crawlerFindStockIndexValueAdapter,
+    webRequestStockInformations
   );
 
   const createStockMarketIndexDailyVariationController = new CreateStockMarketIndexDailyVariationController(createStockMarketIndexDailyVariation);

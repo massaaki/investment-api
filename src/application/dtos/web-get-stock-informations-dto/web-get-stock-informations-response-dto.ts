@@ -5,6 +5,7 @@ export type StockInformation = {
   low: number;
   close: number;
   volume: number;
+  date?: Date;
 }
 
 export type WebGetStockInformationsResponseDTO = {

@@ -1,7 +1,7 @@
 import { WebGetStockInformationsRequestDTO } from "@/application/dtos/web-get-stock-informations-dto/web-get-stock-informations-request-dto";
 import { WebGetStockInformationsResponseDTO } from "@/application/dtos/web-get-stock-informations-dto/web-get-stock-informations-response-dto";
 import { IWebRequestStockInformations } from "@/application/infra-protocols/web-request/web-request-stock-informations";
-import { GetStockMarketInformationsRequest } from "@/domain/use-cases-protocols/stock-market-index.ts/get-stock-market-index";
+import { GetStockMarketInformationsRequest } from "@/domain/use-cases-protocols/stock-market-index/get-stock-market-index";
 import { GetStockMarketInformations } from "./get-stock-market-informations";
 
 

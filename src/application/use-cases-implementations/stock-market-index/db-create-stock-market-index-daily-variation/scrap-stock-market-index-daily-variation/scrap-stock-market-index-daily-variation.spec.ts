@@ -1,7 +1,7 @@
 import { CrawlerFindStockIndexValueRequestDto } from "@/application/dtos/crawler-find-stock-index-value-dto/crawler-find-stock-index-value-request-dto"
 import { CrawlerFindStockIndexValueResponseDto } from "@/application/dtos/crawler-find-stock-index-value-dto/crawler-find-stock-index-value-response-dto"
 import { ICrawlerFindStockIndexValue } from "@/application/infra-protocols/web-crawler/crawler-find-stock-index-value"
-import { ScrapStockMarketIndexDailyVariationRequest } from "@/domain/use-cases-protocols/stock-market-index.ts/scrap-stock-market-index-daily-variation"
+import { ScrapStockMarketIndexDailyVariationRequest } from "@/domain/use-cases-protocols/stock-market-index/scrap-stock-market-index-daily-variation"
 import { ScrapStockMarketIndexDailyVariation } from "./scrap-stock-market-index-daily-variation"
 
 const makeFakeRequest = (): ScrapStockMarketIndexDailyVariationRequest => ({
