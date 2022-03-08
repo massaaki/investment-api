@@ -24,10 +24,9 @@ export const makeCreateStockMarketIndexDailyVariationController = (): IControlle
     createStockMarketIndexDailyVariationRepository,
     updateStockMarketIndexDailyVariationRepository,
     crawlerFindStockIndexValueAdapter,
-    webRequestStockInformations
   );
 
-  const createStockMarketIndexDailyVariationController = new CreateStockMarketIndexDailyVariationController(createStockMarketIndexDailyVariation);
+  const createStockMarketIndexDailyVariationController = new CreateStockMarketIndexDailyVariationController(createStockMarketIndexDailyVariation, webRequestStockInformations);
 
   return createStockMarketIndexDailyVariationController;
 }

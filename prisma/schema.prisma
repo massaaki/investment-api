@@ -67,6 +67,7 @@ model StockMarketIndexDailyVariation {
   min        Float
   max        Float
   isOpened   Boolean  @default(true)
+  volume     Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

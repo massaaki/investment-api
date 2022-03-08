@@ -8,26 +8,21 @@ export class CreateStockMarketIndexDailyVariationController implements IControll
 
   constructor(
     private readonly createStockMarketIndexDailyVariation: ICreateStockMarketIndexDailyVariationIndex,
+    private readonly getStockMarketInformations: IGetStockMarketInformations
   ) {}
 
   async handle(httpRequest: HttpRequest<any>): Promise<HttpResponse<any>> {
     try {
-      const { code, value } = httpRequest.body;
+      const { code } = httpRequest.body;
 
-      // const { history } = await this.getStockMarketInformations.getStocksInformations({
-      //   code
-      // });
-
-      console.log('1');
-      const stockMarketIndexDailyVariation = await this.createStockMarketIndexDailyVariation.create({
+      const { history } = await this.getStockMarketInformations.getStocksInformations({
         code
+      }) as any;
+
+      const stockMarketIndexDailyVariation = await this.createStockMarketIndexDailyVariation.create({
+        code, history
       })
 
-      // if (!stockMarketIndexDailyVariation) {
-      //   return null;
-      // }
-
-      // return ok(stockMarketIndexDailyVariation);
       return ok('');
 
     } catch (error) {
