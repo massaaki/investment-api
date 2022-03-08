@@ -1,9 +1,13 @@
 import { IStockMarketIndexDailyVariation } from "@/domain/entities/stock-market-index"
 
-export type GetStockMarketIndexRequest = {
+export type GetStockMarketInformationsRequest = {
   code: string
 }
+export type GetStockMarketInformationsResponse = {
+  code: string;
+  history: IStockMarketIndexDailyVariation[];
+}
 
-export interface IGetStockMarketIndex {
-  getStockInformations(request: GetStockMarketIndexRequest): Promise<IStockMarketIndexDailyVariation>
+export interface IGetStockMarketInformations {
+  getStocksInformations(request: GetStockMarketInformationsRequest): Promise<GetStockMarketInformationsResponse>
 }

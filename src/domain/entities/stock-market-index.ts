@@ -10,5 +10,6 @@ export interface IStockMarketIndexDailyVariation {
   value?: number
   min?: number
   max?: number
+  volume?: number
   isOpened?: boolean
 }
