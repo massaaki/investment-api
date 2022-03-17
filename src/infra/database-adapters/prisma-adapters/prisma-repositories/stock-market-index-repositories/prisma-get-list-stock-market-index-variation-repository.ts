@@ -17,6 +17,9 @@ export class PrismaGetListStockMarketIndexVariationRepository implements IGetSto
           created_at: {
             gt: baseData
           }
+        },
+        orderBy: {
+          created_at: 'desc'
         }
       })
       return list;

@@ -9,6 +9,7 @@ import me from './me';
 // Stock market Index
 import createStockMarketIndex from './stock-market-index/create-stock-market-index-typedef'
 import createStockMarketIndexDailyVariation from './stock-market-index-daily-variation/create-stock-market-index-daily-variation-typedef'
+import getListStockMarketIndexVariation from './stock-market-index-daily-variation/get-list-stock-market-index-variation'
 
 export default [
   base,
@@ -18,5 +19,6 @@ export default [
   sayHello,
   me,
   createStockMarketIndex,
-  createStockMarketIndexDailyVariation
+  createStockMarketIndexDailyVariation,
+  getListStockMarketIndexVariation
 ]
