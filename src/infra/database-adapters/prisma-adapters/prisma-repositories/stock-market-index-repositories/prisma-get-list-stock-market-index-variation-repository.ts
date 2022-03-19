@@ -19,7 +19,7 @@ export class PrismaGetListStockMarketIndexVariationRepository implements IGetSto
           }
         },
         orderBy: {
-          created_at: 'desc'
+          created_at: 'asc'
         }
       })
       return list;
