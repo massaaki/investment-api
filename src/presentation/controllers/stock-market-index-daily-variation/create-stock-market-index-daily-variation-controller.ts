@@ -28,6 +28,5 @@ export class CreateStockMarketIndexDailyVariationController implements IControll
     } catch (error) {
       return serverError(error);
     }
-
   }
 }
