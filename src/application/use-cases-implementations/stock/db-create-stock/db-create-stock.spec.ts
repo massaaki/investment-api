@@ -2,8 +2,6 @@ import { CreateStockRepositoryRequestDto, ICreateStockRepository } from "@/appli
 import { IStock } from "@/domain/entities/stock";
 import { DbCreateStock } from "./db-create-stock";
 
-
-
 const makeFakeRequest = (): CreateStockRepositoryRequestDto => ({
   code: 'any-code',
   high: 100,
@@ -23,18 +21,14 @@ const makeFakeStock = (): IStock => ({
   volume: 10
 })
 
-
 const makeCreateStockRepositoryStub = (): ICreateStockRepository => {
   class CreateStockRepositoryStub implements ICreateStockRepository {
     create(request: CreateStockRepositoryRequestDto): Promise<IStock> {
-      
       return new Promise(resolve => resolve(makeFakeStock()))
     }
-    
   }
   return new CreateStockRepositoryStub();
 }
-
 
 type makeSutTypes = {
   sut: DbCreateStock;
@@ -42,16 +36,12 @@ type makeSutTypes = {
 }
 const makeSut = (): makeSutTypes => {
   const createStockRepositoryStub = makeCreateStockRepositoryStub();
-  
   const sut = new DbCreateStock(createStockRepositoryStub);
-
-  
 
   return {
     sut,
     createStockRepositoryStub
   }
-
 }
 
 
