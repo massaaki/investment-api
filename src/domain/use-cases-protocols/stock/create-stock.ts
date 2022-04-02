@@ -1,10 +1,7 @@
-export type CreateStockRequest = {
-  value: number;
-  min: number;
-  max: number;
-  volume: number;
-}
+import { IStock } from "@/domain/entities/stock";
+
+export type CreateStockRequest = Omit<IStock, "id">
 
 export interface ICreateStock {
-  create(request: CreateStockRequest): Promise<void>;
+  create(request: CreateStockRequest): Promise<IStock>;
 }
