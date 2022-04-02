@@ -112,3 +112,14 @@ model StockMarketCompanyValues {
 
   @@map("stock_market_company_values")
 }
+
+model Stock {
+  id    String @id @default(uuid())
+  code  String
+  open  Float
+  close Float
+  max   Float
+  min   Float
+
+  @@map("stocks")
+}
