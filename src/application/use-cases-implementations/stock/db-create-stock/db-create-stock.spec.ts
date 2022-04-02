@@ -23,7 +23,7 @@ const makeFakeStock = (): IStock => ({
 
 const makeCreateStockRepositoryStub = (): ICreateStockRepository => {
   class CreateStockRepositoryStub implements ICreateStockRepository {
-    create(request: CreateStockRepositoryRequestDto): Promise<IStock> {
+    async create(request: CreateStockRepositoryRequestDto): Promise<IStock> {
       return new Promise(resolve => resolve(makeFakeStock()))
     }
   }
@@ -44,19 +44,39 @@ const makeSut = (): makeSutTypes => {
   }
 }
 
-
 describe('## DbCreateStock UseCase', () => {
   describe('Verify', () => {
-
-    it('should call CreateStockRepositoryStub.create with correct valyes', async () => {
+    it('should call CreateStockRepositoryStub.create with correct values', async () => {
       const { sut, createStockRepositoryStub } = makeSut();
       const createSpy = jest.spyOn(createStockRepositoryStub, 'create');
 
       await sut.create(makeFakeRequest());
       expect(createSpy).toHaveBeenCalledWith(makeFakeRequest())
-
     });
   });
-  // describe('Behavior', () => {});
-  // describe('Throw', () => {});
+
+  describe('Behavior', () => {
+    it('should return IStock when succeds', async () => {
+      const { sut } = makeSut();
+      
+      const respose = await sut.create(makeFakeRequest());
+
+      expect(respose).toEqual(makeFakeStock());
+    });
+  });
+
+  describe('Throw', () => {  
+    it('should throw if CreateStockRepository.create throws', async () => {
+      const { sut, createStockRepositoryStub } = makeSut();
+
+
+      jest.spyOn(createStockRepositoryStub, 'create').mockImplementationOnce(() => {
+        throw new Error();
+      });
+
+      const promise = sut.create(makeFakeRequest());
+
+      await expect(promise).rejects.toThrow();
+    })
+  });
 });

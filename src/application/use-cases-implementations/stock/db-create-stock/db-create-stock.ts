@@ -6,15 +6,16 @@ export class DbCreateStock implements ICreateStock {
   constructor(private readonly createStockRepository: ICreateStockRepository) {}
 
   async create(request: CreateStockRequest): Promise<IStock> {
+    if (!request) {
+      return null;
+    }
+
     const { close, code, high, low, open, volume } = request;
 
-    await this.createStockRepository.create({
+    const response = await this.createStockRepository.create({
       close, code, high, low, open, volume
     });
 
-    return null;
+    return response;
   }
-  
-
-
 }
