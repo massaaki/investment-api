@@ -118,8 +118,9 @@ model Stock {
   code  String
   open  Float
   close Float
-  max   Float
-  min   Float
+  high  Float
+  low   Float
+  volume Float
 
   @@map("stocks")
 }

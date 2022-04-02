@@ -9,7 +9,7 @@ export class PrismaUpdateStockMarketIndexDailyVariationRepository implements IUp
 
     try {
       const client = Client.getInstance();
-      const { code, value } = request;
+      const { code } = request;
 
       const stockMarketIndex = await client.stockMarketIndex.findFirst({
         where: {
