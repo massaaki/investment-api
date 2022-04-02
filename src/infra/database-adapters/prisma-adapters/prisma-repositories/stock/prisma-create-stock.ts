@@ -1,10 +1,9 @@
 import {Client} from '../../client'
 
 import { CreateStockRepositoryRequestDto, ICreateStockRepository } from "@/application/infra-protocols/db/stock/create-stock-repository";
-import { IStock } from "@/domain/entities/stock";
 
 export class PrismaCreateStock implements ICreateStockRepository {
-  async create(request: CreateStockRepositoryRequestDto): Promise<IStock> {
+  async create(request: CreateStockRepositoryRequestDto): Promise<void> {
     if(!request){
       return null;
     }
@@ -14,9 +13,10 @@ export class PrismaCreateStock implements ICreateStockRepository {
 
     const stockDatas = history.map((stock) => ({
       code,
-      value: stock.close,
-      min: stock.low,
-      max: stock.high,
+      open: stock.open,
+      close: stock.close,
+      high: stock.low,
+      low: stock.high,
       volume: stock.volume,
       created_at: stock.date
     }))
