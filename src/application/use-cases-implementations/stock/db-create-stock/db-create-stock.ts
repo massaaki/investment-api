@@ -1,21 +1,35 @@
 import { ICreateStockRepository } from "@/application/infra-protocols/db/stock/create-stock-repository";
-import { IStock } from "@/domain/entities/stock";
+import { IWebRequestStockInformations } from "@/application/infra-protocols/web-request/web-request-stock-informations";
 import { CreateStockRequest, ICreateStock } from "@/domain/use-cases-protocols/stock/create-stock";
 
 export class DbCreateStock implements ICreateStock {
-  constructor(private readonly createStockRepository: ICreateStockRepository) {}
+  constructor(
+    private readonly createStockRepository: ICreateStockRepository,
+    private readonly requestStockInfo: IWebRequestStockInformations
+  ) {}
 
-  async create(request: CreateStockRequest): Promise<IStock> {
+  async create(request: CreateStockRequest): Promise<void> {
     if (!request) {
       return null;
     }
 
-    const { close, code, high, low, open, volume } = request;
+    const {  code } = request;
 
-    const response = await this.createStockRepository.create({
-      close, code, high, low, open, volume
+    const stocks = await this.requestStockInfo.getStocksInformations({
+      code,
+      time_series: 'TIME_SERIES_DAILY'
     });
 
-    return response;
+
+    await this.createStockRepository.create({
+      code: stocks.code,
+      history: stocks.history
+    })
+
+    // const response = await this.createStockRepository.create({
+    //   close, code, high, low, open, volume
+    // });
+
+    return;
   }
 }

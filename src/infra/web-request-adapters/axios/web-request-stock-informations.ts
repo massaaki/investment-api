@@ -5,8 +5,8 @@ import { WebGetStockInformationsResponseDTO } from "@/application/dtos/web-get-s
 import { IWebRequestStockInformations } from "@/application/infra-protocols/web-request/web-request-stock-informations";
 
 export class WebRequestStockInformations implements IWebRequestStockInformations {
-  async getStocksInformations(request: WebGetStockInformationsRequestDTO): Promise<WebGetStockInformationsResponseDTO> {
-    const response = await axios.get(`https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=${request.code}&outputsize=full&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`);
+  async getStocksInformations({ code, time_series = 'TIME_SERIES_MONTHLY'}: WebGetStockInformationsRequestDTO): Promise<WebGetStockInformationsResponseDTO> {
+    const response = await axios.get(`https://www.alphavantage.co/query?function=${time_series}&symbol=${code}&outputsize=full&apikey=${process.env.ALPHA_VANTAGE_API_KEY}`);
     
 
     const history = Object.entries(response.data['Time Series (Daily)']).map(stock => {
@@ -23,7 +23,7 @@ export class WebRequestStockInformations implements IWebRequestStockInformations
     })
 
     return {
-      code: request.code,
+      code,
       history
     }
   }

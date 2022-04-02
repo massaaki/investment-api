@@ -122,5 +122,8 @@ model Stock {
   low   Float
   volume Float
 
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
   @@map("stocks")
 }

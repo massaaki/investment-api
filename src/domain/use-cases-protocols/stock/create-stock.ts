@@ -1,7 +1,7 @@
-import { IStock } from "@/domain/entities/stock";
-
-export type CreateStockRequest = Omit<IStock, "id">
+export type CreateStockRequest = {
+  code: string
+}
 
 export interface ICreateStock {
-  create(request: CreateStockRequest): Promise<IStock>;
+  create(request: CreateStockRequest): Promise<void>;
 }

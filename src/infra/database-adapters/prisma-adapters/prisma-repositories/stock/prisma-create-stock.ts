@@ -9,15 +9,24 @@ export class PrismaCreateStock implements ICreateStockRepository {
       return null;
     }
 
-    const {code, close, high, low, open, volume} = request;
+    const {code, history} = request;
     const client = Client.getInstance();
 
-    const response = await client.stock.create({
-      data: {
-        close, code, high, low, open, volume
-      }
+    const stockDatas = history.map((stock) => ({
+      code,
+      value: stock.close,
+      min: stock.low,
+      max: stock.high,
+      volume: stock.volume,
+      created_at: stock.date
+    }))
+
+
+    await client.stock.createMany({
+      data: stockDatas,
+      skipDuplicates: true
     })
 
-    return response;
+    return null;
   }
 }

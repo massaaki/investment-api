@@ -6,4 +6,5 @@ export interface IStock {
   high: number;
   low: number;
   volume: number;
+  date?: Date;
 }
