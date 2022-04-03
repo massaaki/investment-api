@@ -11,6 +11,9 @@ import createStockMarketIndex from './stock-market-index/create-stock-market-ind
 import createStockMarketIndexDailyVariation from './stock-market-index-daily-variation/create-stock-market-index-daily-variation-typedef'
 import getListStockMarketIndexVariation from './stock-market-index-daily-variation/get-list-stock-market-index-variation'
 
+//Stock
+import createStock from './stock/create-stock-typedef'
+
 export default [
   base,
   signup,
@@ -20,5 +23,6 @@ export default [
   me,
   createStockMarketIndex,
   createStockMarketIndexDailyVariation,
-  getListStockMarketIndexVariation
+  getListStockMarketIndexVariation,
+  createStock
 ]

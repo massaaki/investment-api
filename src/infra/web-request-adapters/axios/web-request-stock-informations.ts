@@ -27,5 +27,4 @@ export class WebRequestStockInformations implements IWebRequestStockInformations
       history
     }
   }
-
 }
